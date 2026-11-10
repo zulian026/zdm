@@ -47,7 +47,7 @@ ZDM is a download manager for Linux, built with [Tauri v2](https://v2.tauri.app/
 ## Installation
 
 Linux (x86_64) only. Get the latest release from the
-[Releases page](https://github.com/zulian026/zdm/releases/latest) — each release ships the AppImage, the standalone binary, and a `version.json` manifest.
+[Releases page](https://github.com/zulian026/zdm/releases/latest) — each release ships the AppImage, the standalone binary, a `.deb` package, and a `version.json` manifest.
 
 **AppImage (recommended):**
 
@@ -55,6 +55,14 @@ Linux (x86_64) only. Get the latest release from the
 chmod +x ZDM_0.1.1_amd64.AppImage
 ./ZDM_0.1.1_amd64.AppImage
 ```
+
+**Debian package (Debian/Ubuntu):**
+
+```bash
+sudo apt install ./ZDM_0.1.1_amd64.deb
+```
+
+Installs `zdm` to `/usr/bin` with an app-menu entry; dependencies are pulled in automatically. On other distributions, use the AppImage or the standalone binary.
 
 **Standalone binary:**
 
