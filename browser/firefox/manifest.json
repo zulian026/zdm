@@ -1,0 +1,40 @@
+{
+  "action": {
+    "default_title": "ZDM: auto-download ON \u2014 click to turn off"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "zdm@example.local",
+      "strict_min_version": "109.0"
+    }
+  },
+  "description": "Downloads started in the browser are cancelled there and handed to ZDM (ZDM Download Manager) automatically. Click the toolbar icon to toggle.",
+  "manifest_version": 3,
+  "name": "ZDM Browser Integration",
+  "permissions": [
+    "downloads",
+    "nativeMessaging",
+    "contextMenus",
+    "activeTab",
+    "storage"
+  ],
+  "version": "1.1.0",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}

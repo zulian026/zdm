@@ -1,0 +1,268 @@
+{
+ "entries": [
+  {
+   "at": "2026-11-09T11:53:00Z",
+   "deal": "download-manager-desktop-tool-3135·472bf7ff·2026-11-09·r0",
+   "dealt": [
+    "Console (console) · dark/grotesk-sans/chromatic-amber",
+    "Blueprint (blueprint) · mid/geometric-sans/neutral",
+    "Cobalt (cobalt) · light/grotesk-sans/cool"
+   ],
+   "genre": "modern-minimal",
+   "kind": "deal",
+   "picked": "Console 1/3 — dark, graphite ground in three lightness steps, Host Grotesk 500 reading face, Atkinson Hyperlegible Mono for measured figures, amber for a person, cool blue for an instrument. Brand lime #c6f24e kept as the accent (same hue family, hue 80; brand value read from the project's files wins per redesign.md). Cool blue NOT used as a second signal in the UI (one-hue discipline, product rule colour-only-on-data).",
+   "prompt": "download manager desktop tool for a technical power user, dark console, file queue, speed and progress at a glance"
+  },
+  {
+   "at": "2026-11-09T11:54:00Z",
+   "file": ".hallmark/preflight.json",
+   "inferences": {
+    "audience": "The user himself (Zulian), a technical power user.",
+    "material": "The app itself and its real data. No photos, no invented figures; sample data only in preview files, never shipped.",
+    "tone": "modern-minimal, technical, instrument-like. Console: a lab notebook kept by a careful person.",
+    "use": "Manage downloads as fast as possible: see what is running, how fast, when it finishes; start/stop the queue; add a URL in one click."
+   },
+   "kind": "preflight"
+  },
+  {
+   "at": "2026-11-09T11:55:44Z",
+   "kind": "before",
+   "read": {
+    "broken": "Nothing structural. The empty-state error line in the render is a static-render artifact (no Tauri runtime), not a defect.",
+    "for": "A download manager for one technical user; the one action is to see what is downloading, how fast, and when it finishes.",
+    "generated": "Pure-absolute black ground (7a/7b), Inter as the display face, colour and font literals outside tokens (48), no focus ring (26a), focus by border (39a), field edges under 3:1 (40), spacing off the 4px scale (24b), eight identical container boxes (F7), three equal icon-tile columns in Settings usage (WARN 3).",
+    "works": "The bento + timeline composition (day groups, segment strip, scrubber), the lime-on-black brand, the sticky sidebar shell."
+   },
+   "record": ".hallmark/before.json — 0 links, 29 fields, 0 handlers, 0 test hooks, 1 rendered page; all element IDs recorded for --kept.",
+   "screenshots": ".hallmark/before/ (1280x800, 1440x900, 1920x1080, 1440 full, 375 full)",
+   "sloplint": "31 FAIL, 33 REFLEX, 10 WARN (static + render, genre modern-minimal, scope app)"
+  },
+  {
+   "at": "2026-11-09T12:00:00Z",
+   "kind": "critique",
+   "pre_emit": {
+    "E": 3,
+    "H": 5,
+    "P": 4,
+    "R": 4,
+    "S": 4,
+    "V": 4,
+    "fix": "Lab-notebook microcopy (value, unit, time, why it matters) in empty states and helper lines, using the app's own words; the speed Reading and the day-grouped trail are the emotional centre, not decorative copy.",
+    "weakest": "E — the app is a tool with almost no copy voice; Console's lab-notebook voice must come through in microcopy and in the numbers themselves, not in invented claims."
+   }
+  },
+  {
+   "at": "2026-11-09T12:00:00Z",
+   "before": "sloplint 31 FAIL, 33 REFLEX, 10 WARN (2026-11-09, genre modern-minimal, scope app)",
+   "files": {
+    "create": [
+     "src/tokens.css",
+     "src/base.css",
+     ".hallmark/*",
+     "design.md (after scaffold, locks the system)"
+    ],
+    "delete": [],
+    "edit": [
+     "src/main.ts",
+     "src/styles.css",
+     "index.html"
+    ]
+   },
+   "keeps": [
+    "Every link, field, handler, element ID and Tauri command (before.json).",
+    "Brand: lime #c6f24e accent, ZDM wordmark + icon, per-download segment strip.",
+    "Shell behaviour: 224px sticky sidebar, #app 100dvh, only main#content scrolls on desktop; Menu sheet on phone.",
+    "Type-scale discipline (one scale, tabular figures) and the bento + timeline composition's data (day groups, scrubber, speed chart, vitals) — recomposed, not removed.",
+    "Backend (src-tauri/): untouched; cargo test stays 82/82."
+   ],
+   "kind": "picks",
+   "material": {
+    "absent": "Logos, quotes, metrics nobody gave.",
+    "draw": "Skipped: an app screen has no hero/shape to draw; composition comes from the app's own screens plus Console's Range (Trails, Readings, Panels).",
+    "mirror": "A neighbouring dev tool in Console would share graphite + Grotesk + mono. ZDM differs in its signature: the per-download segment strip as the ledger of a file, the speed Reading set large in mono, and the day-grouped trail on a rule-2 spine. That combination is the product's, not the theme's.",
+    "pictures": "Captures of the running app (before/after in .hallmark/).",
+    "real": "The app itself and its real data (downloads, speeds, sizes, ETAs, checksums)."
+   },
+   "redesign": "full",
+   "scope": "app",
+   "screen_rows": [
+    {
+     "idea": "The instrument. A Reading (speed Now, mono, display size) beside a 5-minute lime line; below it the day-grouped trail — the queue as an audit trail on a rule-2 spine — inside bento panels cut from one surface with 1px seams. Now lives only here, one figure one place.",
+     "screen": "Downloads"
+    },
+    {
+     "idea": "The record. Same trail language, cards on the spine, history filters as quiet controls, scrubber as the footer strip; verified state as a lime check + mono hash prefix.",
+     "screen": "Completed"
+    },
+    {
+     "idea": "The bench. One column of labelled fields with helper lines; usage as three figures divided by 1px rules (not icon tiles); daily schedule and autostart as switches with state in words.",
+     "screen": "Settings"
+    },
+    {
+     "idea": "The form. One dialog, one job; labels above fields, mono for URLs and hashes, lime-filled primary with accent-ink text, outline secondary.",
+     "screen": "Modals (Add URL, Grab, pending confirm)"
+    },
+    {
+     "idea": "One line naming what is empty, one line why it matters, one action.",
+     "screen": "Empty states"
+    }
+   ],
+   "screens": [
+    "Downloads",
+    "Completed",
+    "Settings",
+    "Add URL modal + Grab tab",
+    "IDM-style download confirmation popup",
+    "empty states",
+    "topbar + sidebar",
+    "search"
+   ],
+   "sweep": "sloplint --kept --render --scope app after the build; fix every FAIL; waive REFLEX only with a recorded reason. Finish review in fresh context via a child subagent. Max 2 critique rounds.",
+   "system_portable": "Yes — multi-view app, one system. Lock it in design.md after the scaffold so the next round reuses it.",
+   "theme": {
+    "axes": "dark/grotesk-sans/chromatic-amber",
+    "dealt": "1/3, seed download-manager-desktop-tool-3135·472bf7ff·2026-11-09·r0",
+    "gifts": [
+     "Three-step graphite ground (fixes gate 7b cleanly vs pure #000 ground).",
+     "Hairline panels radius 10px, controls 6px (vs 20px/999px).",
+     "Host Grotesk 500 reading + Atkinson Hyperlegible Mono for measured figures (fixes gate 1; mono only for measurements, gate 64).",
+     "Audit-trail treatment of the timeline (rule-2 spine) and Readings treatment of the speed figure (mono at display size).",
+     "Bento panels cut from one surface with 1px seams (theme wins on material)."
+    ],
+    "posture": "restrained",
+    "slug": "console"
+   }
+  },
+  {
+   "at": "2026-11-09T12:04:00Z",
+   "kind": "sweep",
+   "result": "sloplint --kept --render --scope app --genre modern-minimal: 0 FAIL, 0 REFLEX, 2 WARN (F4, F7). Before: 31 FAIL, 33 REFLEX, 10 WARN. Kept: fields 29/29, headings 4/4, figures 2/2. Compare: .hallmark/compare.html. After screenshots: .hallmark/after/ (5 views x desktop/phone). Render shots: .hallmark/shots/.",
+   "fixed_in_sweep": [
+    "24a: all raw spacing in padding/margin/gap replaced with var(--space-*) via .hallmark/space-tokens.py; 20px/28px/48px kept raw (no matching token, on the 4px scale).",
+    "26a/34/26b on index.html: the stylesheet link was absolute (/src/styles.css) so the linter could not resolve it; changed to relative src/styles.css. Build output unchanged (Vite rewrites the link to /assets/...).",
+    "41: color added to .bento-queue .tl-card and the switch rule.",
+    "F1: curly apostrophe in grabber note (can't -> can't).",
+    "F3/F7/F23: base.css text-wrap on heads, meta description added, container roles varied."
+   ]
+  },
+  {
+   "at": "2026-11-09T12:04:00Z",
+   "dismissed": [
+    {
+     "gate": "F4",
+     "reason": "The scrub-dot is a 6px event mark on a day button (data, not a button); the only filled primary is .btn-primary. The linter's heuristic counts any filled accent element as a primary."
+    },
+    {
+     "gate": "F7",
+     "reason": "The bento panels share one recipe by design: Console's own material rule (panels together are one surface divided by 1px rules). Roles do vary: panels (paper + rule), wells (paper-2 + rule, timeline cards and the modal raised), the usage strip (borderless, dividers only), the scrubber (top-rule strip only). Identical panels sharing a recipe is the theme's material, not a generated tell."
+    }
+   ],
+   "kind": "dismissals"
+  },
+  {
+   "at": "2026-11-09T12:04:00Z",
+   "gate": "64",
+   "guard": "The queue state word (Downloading/Idle/Paused) is set in the measured face as the instrument's mode readout, like a version or timestamp in Console's own picture — not a label. All other mono uses are measurements (speeds, sizes, ETAs, counts, hashes, URLs, chart labels).",
+   "kind": "guard"
+  },
+  {
+   "at": "2026-11-09T12:04:00Z",
+   "file": "design.md",
+   "kind": "lock",
+   "note": "System locked at the project root per design-md.md (multi-view redesign). Genre modern-minimal, shape app screen, theme Console, axes dark/grotesk-sans/chromatic-amber, posture restrained. Tokens in src/tokens.css are the source of truth."
+  },
+  {
+   "at": "2026-11-09T12:20:00Z",
+   "kind": "finish-review-fix",
+   "review": "finish review (fresh context) verdict: fix — 6 findings, ranked by cost",
+   "fixes": [
+    {
+     "n": 1,
+     "finding": "Gate 73 Floor: phone Completed verify line painted over the size line's 100% in the firefox card (.verify nowrap inside the 96px status column).",
+     "fix": "Phone only: .verify { white-space: normal; text-align: right; } — wraps to two lines inside the status column. Desktop keeps nowrap (no collision there: ETA is '-' at a different height).",
+     "score": 5,
+     "evidence": ".hallmark/after/preview-completed-home-phone.png — 'Verified ·' / '61b1ec04135b' on two lines, 'of 73.0 MB · 100%' fully legible."
+    },
+    {
+     "n": 2,
+     "finding": "F4 new reason: Downloads title row had two ink-filled buttons side by side (active All cat-pill + Add URL primary).",
+     "fix": ".cat-pill.is-active, .tab.is-active and .scrub-btn.is-active now use the Console chip language: accent-soft fill, accent text, transparent border (selection state, not a second primary). Scrub dot/count on active now accent on accent-soft. Comments in styles.css updated ('Lime never touches these' removed).",
+     "score": 5,
+     "evidence": ".hallmark/after/preview-home-desktop.png — All pill and All tab lime-tinted; Add URL the only ink-filled button. Sweep F4 now names only .btn-primary + the scrub-dot (covered by the recorded F4 dismissal)."
+    },
+    {
+     "n": 3,
+     "finding": "Settings panels half empty on desktop for numeric fields (Connections 8, Max concurrent 3, Speed limit 0).",
+     "fix": "New .setting-panel--short (160px: 120px field + padding) on the three numeric panels in index.html, preview.html, preview-settings.html, preview-modal.html, preview-grabber.html. Note: the first capture showed no change — the preview files mirror the Settings markup separately, so the class had to be added in all five files.",
+     "score": 5,
+     "evidence": ".hallmark/after/preview-settings-home-desktop.png — Connections / Max concurrent / Speed limit panels hug their fields; Download directory and Proxy keep full-width panels."
+    },
+    {
+     "n": 4,
+     "finding": "Sample figures disagreed: Downloads 'Downloaded today 4.2 GB' vs Settings/modal-previews 4.4 GB.",
+     "fix": "preview-settings.html hardcoded 4715234567 -> 4538259956 (the Downloads dataset's today sum: 3812345678+601234567+76543210+45678901+2457600 = 4538259956 = 4.2 GB). No 4715234567 or sidebar-foot remains in any preview file.",
+     "score": 5,
+     "evidence": "preview-home-desktop.png and preview-settings-home-desktop.png both read 'Downloaded today 4.2 GB'."
+    },
+    {
+     "n": 5,
+     "finding": "Modal/grabber previews drifted from shipped markup: old bento background (Active/Queued split panels), phantom sidebar footer ('6 completed · 4.4 GB today', no such element in index.html), Add modal omitted the shipped SHA-256 section.",
+     "fix": "preview-modal.html and preview-grabber.html rebuilt as copies of preview.html (current shell) with the modal default baked in (pending / add). Grabber keeps its sample grab results, now filled by JS (same 4 rows: video 48.2 MB, audio 5.1 MB, stream manifest 2.4 KB, link —). Header comments say to re-copy from preview.html when the shell changes. The same phantom footer was also removed from preview-settings.html (it was visibly clipped in its screenshot).",
+     "score": 5,
+     "evidence": ".hallmark/after/preview-modal-home-desktop.png — current bento background, no footer, pending modal HAS the Expected SHA-256 section; .hallmark/after/preview-grabber-home-phone.png — Add modal HAS the SHA-256 section."
+    },
+    {
+     "n": 6,
+     "finding": "Phone grabber modal: batch textarea's third line (12.8.0-amd64-netinst.iso) cut mid-glyph at the textarea's bottom edge.",
+     "fix": "Root cause was shipped, not just preview: the placeholder's two URLs wrap to 5 visual lines on a 390px phone but rows was 4. Changed rows 4 -> 6 in index.html and preview.html (previews inherit it).",
+     "score": 5,
+     "evidence": ".hallmark/after/preview-grabber-home-phone.png — all five placeholder lines fully visible with empty space below."
+    }
+   ],
+   "sweep_after_fixes": "sloplint --kept --render --scope app: 0 FAIL, 0 REFLEX, 2 WARN (F4 scrub-dot + F7 containers, both recorded dismissals); kept fields 29/29, headings 4/4, figures 2/2; before 31 FAIL, 33 REFLEX, 10 WARN",
+   "critique_round": 1,
+   "note": "All six fixes scored 5/5 by the builder's own visual check of the re-captured screenshots. The F4 dismissal from the redesign round is now partly moot: the active pills are no longer ink-filled, so the only F4 residue is the scrub-dot heuristic itself. No second finish review was run — the review's verdict was 'fix', the fixes were applied as one batch and verified against the review's own evidence files."
+  },
+  {
+   "at": "2026-11-09T13:10:00Z",
+   "kind": "sweep",
+   "review": "auto-resume round: one Settings toggle row added (Resume downloads on startup, checked by default), no other appearance change",
+   "result": "sloplint --kept --render --scope app --genre modern-minimal --url http://localhost:4173/: 0 FAIL, 0 REFLEX, 2 WARN (F4 scrub-dot + F7 shared panel recipe, both recorded dismissals from the redesign). Kept: fields 29/29, headings 4/4, figures 2/2. Before: 31 FAIL, 33 REFLEX, 10 WARN. Note: a static-files run without the vite preview server shows 1 spurious FAIL (76: zdm-icon.png does not load — the absolute /src/assets/... path only resolves under the preview server); the gate is the preview-server run. taste-skill lint --app: 0 FAIL, 6 WARN (all pre-existing patterns: padStart ETA clock, Atkinson Hyperlegible Mono figure font, em-dashes). inspect --app preview-settings.html: 0 FAIL, 1 WARN (below-fold — long Settings form, defended); screenshots .taste-skill/after-resume-settings/ (1440/768/390 reviewed: new row matches the existing toggle rows, lime checked toggle). The preview mirror was missing the autostart row from its round, so both the autostart row and the new resume row were added to .taste-skill/preview-settings.html.",
+   "fixed_in_sweep": []
+  },
+  {
+   "at": "2026-11-09T15:15:00Z",
+   "kind": "sweep",
+   "review": "ClamAV scan round: one Settings toggle row (Scan downloads with ClamAV, checked by default) + scan status line in download rows; row-layout bug fixed in the same round (actions column 150->270px desktop, footer line at <=1200px)",
+   "result": "sloplint --kept --render --scope app --genre modern-minimal --url http://localhost:4173/ (vite preview): 0 FAIL, 0 REFLEX, 1 WARN (kept-comparison note); kept 29/29, 4/4, 2/2. lint --app 0 FAIL 6 WARN (all pre-existing). inspect --app preview-settings.html 0 FAIL 1 WARN (below-fold, long form, defended); screenshots .taste-skill/after-clamav-settings/ (1440/768/390 reviewed). inspect --app preview.html / preview-completed.html: 1 FAIL each at 390 (edge-text) - both proven pre-existing by a full revert test. Row-layout fix verified with a rect-overlap checker: 0 overlaps at 1440/1024/768/390 on both previews. Laptop e2e (.taste-skill/e2e-clamav/run_e2e.sh, 2026-11-09 22:14 WIB): all 5 phases PASS incl. real-scanner phase with user-space ClamAV 1.5.4/28178 and dbus capture of the Virus terdeteksi notification.",
+   "fixed_in_sweep": [
+    "download-row Delete button overlapping verify text (actions column 150->270px desktop, footer line <=1200px)"
+   ]
+  },
+  {
+   "at": "2026-11-09T16:30:00Z",
+   "kind": "sweep",
+   "review": "HLS/DASH merging round (grabber v2): stream badge + segment progress line in download rows (streamLine), segment strip driven by segment counts for streams, full-width footer note for the DASH-no-ffmpeg fallback, Grab tab labels HLS stream / DASH stream (+ 'butuh ffmpeg' when ffmpeg is missing) and updated hint text",
+   "result": "cargo test 112/112 (90 unit + 22 integration, incl. 6 new stream integration tests: HLS merge, DASH mux, AES-128 decrypt, live rejection, DASH-no-ffmpeg fallback, pause/resume with Range). sloplint --kept --render --scope app --genre modern-minimal --url http://localhost:4173/ (vite preview): 0 FAIL, 1 WARN (kept-comparison note, same as ClamAV round); kept 29/29, 4/4, 2/2; before 31 FAIL, 33 REFLEX, now 0 FAIL, 0 REFLEX. lint --app 0 FAIL, 8 WARN (6 pre-existing + 2 new [copy] on the word 'stream' in streamLine — domain word, false positive, defended). inspect --app preview.html 1 FAIL 0 WARN (edge-text 390, pre-existing, proven by full revert test in the ClamAV round). inspect --app preview-completed.html 1 FAIL 1 WARN (edge-text '7 Nov' scrubber, pre-existing; tiny-text 46% under 13px — the two new stream rows tipped the page over the 45% threshold, proven by revert test: 0 WARN without the rows; defended: the 12px subline step is locked in design.md and the stream line shares the .verify class with the existing verify/scan lines). Screenshots .taste-skill/after-stream/ (capture-stream.mjs): downloading HLS 12/48 segmen, merged HLS 'video digabung', DASH-no-ffmpeg footer note — all reviewed at 1440/768/390.",
+   "fixed_in_sweep": [
+    "DASH merge wrote ffmpeg output straight to the .part file, which ffmpeg rejects (cannot infer the muxer from the extension) — now muxes to merged.mp4 in the segments dir, then renames (found by the DASH integration test)",
+    "Long DASH-no-ffmpeg note painted past the card (nowrap + overflow visible in the 110px status column) — first wrapped in place (tower of single words), then moved to a full-width footer row (.dl-stream-note) so the reason stays readable",
+    "Stream segments marked done were trusted on file size alone — download_stream_segments now re-queues a done segment whose file size mismatches (found while writing the resume test)",
+    "capture-stream.mjs clip coordinates are document-relative while getBoundingClientRect is viewport-relative — 390/768px shots were black until scrollY was added (desktop scrolls #content, scrollY 0 there)",
+    "Laptop e2e phase 5 first failed: the DASH-no-ffmpeg fallback note was set in memory (g.stream_note) but never reached disk — the success path deleted the sidecar unconditionally on completion, and save_state refused to write a note-only sidecar (total None, stream None). Fix (engine.rs): save_state now also writes when stream_note is set, and the success path keeps the sidecar (status completed) instead of deleting it when a note exists; restore_from_db already reads the note back from the sidecar. Regression test added to dash_without_ffmpeg_downloads_playlist_only (sidecar on disk must mention ffmpeg). cargo test still 112/112; rebuild: binary b7b1d084a0f4956545c7b9d5520ec0d071b7df28e645df5a95ee91af87e0a1b2, AppImage 10f81fd542954125ba11e6170690b7111ab2b13aded66883b0bb8d30ce99c1ce — identical on laptop."
+   ],
+   "laptop_e2e": "2026-11-09 23:41-23:42 WIB, run_e2e.sh, ALL PHASES PASS (E2E-EXIT=0). Phase 1 HLS merge: plays, duration 6.037s, frames match source. Phase 2 DASH mux: plays, duration 6.000s, frames match. Phase 3 AES-128 HLS decrypt+merge: plays, 6.037s, frames match. Phase 4 live rejected honestly ('live stream tidak didukung — hanya VOD (playlist berhingga)'). Phase 5 DASH without ffmpeg: playlist downloaded + note 'ffmpeg tidak ditemukan — hanya playlist yang diunduh; instal ffmpeg untuk menggabungkan segmen menjadi video'. Phase 6 kill -9 mid-download (60 s stream, dribbled server): merged 60.024s file plays, frames match; 30 segments requested, 22 exactly once, 8 resumed with Range (server-log proof). settings.json restored byte-for-byte; test dir removed; ~/Downloads/ZDM/ untouched."
+  },
+  {
+   "at": "2026-11-10T05:30:00Z",
+   "kind": "sweep",
+   "review": "Update checker round: offer banner above the Downloads bento (version in mono, changelog, Download + Dismiss) and two Settings rows (Update manifest URL input, Check for updates row with status line + Check now button)",
+   "result": "cargo test 122/122 (95 unit + 27 integration, incl. 5 new update unit tests and 5 new update integration tests: newer offers, same is up-to-date, broken manifest invalid, dead source unreachable, wrong-SHA asset fails like checksum mismatch with file kept). npm run build passes (tsc + vite). npm run tauri build exit 0; binary 1a5f2b98bb148350118e294c0c97ea0ca6b0eb492c248d3808d43d56ddac086f, AppImage e5ba0186bbe4d443b3e4b9ae01ce09c47f329aec56926d57c7b9eae4c84ddb10. sloplint --kept --render --scope app --genre modern-minimal --url http://localhost:4173/ (vite preview): 0 FAIL, 1 WARN (kept-comparison note); kept 29/29, 4/4, 2/2. lint --app 0 FAIL, 8 WARN (all pre-existing). inspect --app preview.html 1 FAIL 0 WARN (edge-text 390, pre-existing, proven by revert test this round). inspect --app preview-settings.html 0 FAIL 1 WARN (below-fold, long form, pre-existing). Screenshots reviewed: banner 1440/768/390, Settings rows 1440. Smoke Xvfb 25 s exit 124 (no crash).",
+   "fixed_in_sweep": [
+    "parse_version accepted a trailing '-' with nothing after it ('1.0.0-' parsed as a release) because split_once('-') gave an empty pre string that the !pre.is_empty() guard skipped — now carries pre as Option<&str> and rejects an empty Some('') (found by the version_parse_and_compare unit test)",
+    "The new Settings status line was first written as a hardcoded 'ZDM 0.1.0' string; it is now version-free ('Update checks have not run yet.') because the real text comes from get_update_status and the running version is not known to the static HTML"
+   ],
+   "laptop_e2e": "Laptop e2e ALL PHASES PASS 2026-11-10 12:36-12:37 WIB (.taste-skill/e2e-update/run_e2e.sh, E2E-EXIT=0): phase 1 newer version (0.2.0) -> update_available with download_url + sha256; phase 2 same version (0.1.0) -> up_to_date, no offer; phase 3 broken manifest (not json{) -> invalid_manifest, no offer; phase 4 dead source -> unreachable, no offer; phase 5 empty manifest URL -> no check ran, update_state.json not written; phase 6 manifest asset downloads through the engine (queue.json, ask OFF) -> completed, sha256 matches the manifest. settings.json restored byte-for-byte (diff vs backup clean); update_state.json removed (did not exist before the run); test dir ~/zdm-e2e-update removed after reading summary.txt; ~/Downloads/ZDM/ untouched (no .part files); user ZDM was not running at start, left stopped. Sync: binary 1a5f2b98... and AppImage e5ba0186... verified identical on laptop; smoke DISPLAY=:1 15 s exit 124 (no crash, only the known libayatana deprecation warning)."
+  }
+ ]
+}

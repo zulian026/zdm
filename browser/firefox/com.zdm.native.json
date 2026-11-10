@@ -1,0 +1,1 @@
+{"allowed_extensions":["zdm@example.local"],"description":"ZDM native messaging host","name":"com.zdm.native","path":"__ZDM_HOST_PATH__","type":"stdio"}

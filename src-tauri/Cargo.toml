@@ -1,0 +1,39 @@
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+futures-util = "0.3"
+md5 = "0.7"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "stream"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+# tray-icon + image-png are core Tauri features (not plugins): they switch
+# on TrayIconBuilder / tray_by_id and Image::from_bytes for the tray icon.
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-notification = "2"
+tokio = { version = "1", features = ["full"] }
+url = "2"
+
+[dev-dependencies]
+# sha2 is also a main dependency now (runtime hashing); the tests
+# below keep using it directly.
+sha2 = "0.10"
+
+[lib]
+name = "zdm_lib"
+path = "src/lib.rs"
+
+[package]
+build = "build.rs"
+description = "ZDM Download Manager — clean-room Linux download manager"
+edition = "2021"
+name = "zdm"
+version = "0.1.0"
+
+[profile.release]
+lto = true
+opt-level = 2

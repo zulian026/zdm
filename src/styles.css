@@ -1,0 +1,2236 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: Console (deal 1/3, seed download-manager-desktop-tool-3135·472bf7ff·2026-11-09·r0) · redesign: full
+ * nav: kept (224px sticky sidebar, Menu sheet on phone) · signature: kept (per-download segment strip) · states: default, hover, focus, active, disabled, loading (skeleton), error, success (verify) · console: dark/grotesk-sans/chromatic-amber · posture: restrained · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E3 S4 R4 V4 · weakest: E, lab-notebook microcopy + the speed Reading and the day-grouped trail carry the feeling, no invented claims */
+/* Hallmark · waivers: none. Every REFLEX is fixed in this file; the sweep
+   decided two judged WARNs as dismissals (recorded in .hallmark/log.json):
+   F4 (the scrub-dot is a 6px event mark, not a button) and F7 (the bento
+   panels share one recipe by design — Console's own material rule: panels
+   together are one surface divided by 1px rules; roles vary by fill and
+   by container: panel / well / borderless strip / top-rule strip). */
+
+/* ZDM — Console (Hallmark, deal 1/3). The app's own system, rebuilt on the
+   dealt theme: graphite ground in three steps, hairline panels cut from
+   one surface, Host Grotesk for reading, Atkinson Hyperlegible Mono for
+   what was measured. Brand lime #c6f24e stays the one accent (icon,
+   segment strip, chart line, speed figures). Colour only on data.
+   No gradients, no glow, no shadows on resting surfaces. */
+
+@import url("./tokens.css");
+@import url("./base.css");
+
+/* Grid arithmetic (closes at every width):
+   canvas  = viewport − sidebar 224 − rule 1 − gutters 24×2
+           = 1440 − 225 − 48 = 1167 at 1440px; the view runs the full canvas
+             (no max-width cap — the old 1100px cap left an 85px dead strip).
+   title   = h1 + category pills (scroll-x, flex: 1) + white Add URL pill.
+             Pills come from the categories actually in the data, All first.
+   bento   = 12 cols, gap 16. Row 1: speed card spans 8 (8fr + 7×16 =
+             772.7), Today panel spans 4 (4fr + 3×16 = 378.3);
+             772.7 + 16 + 378.3 = 1167. Row 2: timeline panel spans 12
+             = 1167. Inside the speed panel (padding 20): content
+             732.7, chart 2fr + figures 1fr + gap 16 → chart ≈ 478,
+             figures ≈ 239. Inside the Today panel (padding 20):
+             content 338.3. Inside the timeline panel (padding 20):
+             content 1127; the toolbar + status pills head it, the
+             timeline groups follow, the scrubber is its footer strip.
+   today   = the vitals as type in the 4/12 panel: Downloaded today
+             as the mono lead figure, Active / Queued side by side on
+             a 1px divider, Queue + schedule line. Now lives only in
+             the speed card (one figure, one place).
+   tabs    = status pills (All / Downloading / Completed / Failed) in
+             the timeline panel's header, left of the toolbar
+             controls; active is the inverted ink pill.
+   timeline = groups per day inside the timeline panel. Each group is
+             indented 28px for its rail: a 1px vertical rule-2 line at
+             x 5px from the group header's lime node down through the
+             cards, one 8px dot per card on the rail. Cards are the
+             paper-2 well on the paper panel. Card inner width
+             1099 − 40 = 1059; table identity = 1059 − 560 fixed − 80
+             gaps = 419 at 1440px. The table head sits above the first
+             group, offset by the same 28px + 20px card padding.
+   scrubber = the timeline panel's footer strip (1px top rule): one
+             button per day in the data (dot + count), scrolling to
+             its group on Downloads and filtering to that day on
+             Completed. (Completed keeps its freestanding strip.)
+   scroll  = desktop >900px: #app is 100dvh; the sidebar is sticky at
+             100dvh with its own internal scroll; only main#content
+             scrolls. Phone ≤900px: the sidebar is a fixed Menu sheet.
+   type    = the token scale at ratio 1.2 from 16px body: 12/14/16/
+             19.2/23 (the app's old 20/24 read as 19.2/23); weights
+             400/500 only; display tracking -0.03em; line-height 16px
+             at 12px, 20px at 14px, 24px at 16px, 28px at 19.2px,
+             32px at 23px; tabular figures on every number; measured
+             figures (speeds, sizes, ETAs, counts, hashes, URLs) in
+             Atkinson Hyperlegible Mono, labels and prose in Host
+             Grotesk (Console: mono only for what was measured).
+   spacing = the 4px scale throughout: 24px outside, 16px between
+             blocks, 20px panel padding. (The old 22px gutter is gone.)
+   table   = identity 1fr + 110 + 110 + 80 + 110 + 150, gaps 5×16 = 80
+           = 640 fixed + identity 419 at 1440px (card content 1059).
+   ≤1200px the ETA column drops: 1fr + 100 + 100 + 100 + 130, gaps 4×16 = 64
+           → identity 1059 − 494 = 565.
+   ≤900px  the bento stacks one column (speed, Today, timeline); the
+             timeline rail and dots hide and groups run flush; the table
+             is three columns (identity 1fr + 84 + 96) and the row action
+             moves under the identity; the sidebar becomes a sheet.
+   roles   = panels are paper + 1px rule + 10px; wells inside a panel
+             (timeline cards) are paper-2 + 1px rule + 10px; the modal
+             is paper-2 + 1px rule + 10px, raised; the usage strip is
+             borderless with 1px dividers; the scrubber is a top-rule
+             strip only. Not every box is the same box (F7). */
+
+@font-face {
+  font-family: "Host Grotesk";
+  src: url("../node_modules/@fontsource/host-grotesk/files/host-grotesk-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Host Grotesk";
+  src: url("../node_modules/@fontsource/host-grotesk/files/host-grotesk-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("../node_modules/@fontsource/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("../node_modules/@fontsource/atkinson-hyperlegible-mono/files/atkinson-hyperlegible-mono-latin-500-normal.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* App structure (the shell is the project's own, not the theme's). */
+  --sidebar-width: 224px;
+  --topbar-height: 64px;
+  --gutter: var(--space-lg);
+  --gap: var(--space-md);
+  --control-height: 36px;
+  /* Type line-heights: 16px at 12px, 20px at 14px, 24px at 16px,
+     28px at 19.2px, 32px at 23px. */
+  --lh-title: 28px;
+  --lh-section: 24px;
+  --lh-kpi: 32px;
+  --lh-body: 20px;
+  --lh-small: 16px;
+}
+
+/* The hidden attribute must win over display rules (.btn sets
+   inline-flex): without this, Retry shows with no error and Add URL
+   shows on the Completed and Settings views. */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  /* Tabular figures on every number: tables, KPIs, speeds, ETAs,
+     counts — digits no longer jitter as values update. */
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Measured figures: Atkinson Hyperlegible Mono, never a label, head or
+   control (Console + gate 64). Speeds, sizes, ETAs, counts, hashes,
+   URLs and chart labels are measurements; everything else reads. */
+.mono,
+.speed-now,
+.speed-stat-value,
+.today-value,
+.today-figure,
+.kpi-value,
+.dl-num,
+.scrub-count,
+.tl-count,
+.count,
+.topbar-status,
+.speed-delta,
+.verify,
+.grab-link,
+.grab-size,
+.dl-url,
+.pending-url {
+  font-family: var(--font-outlier);
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: var(--text-lg);
+  line-height: var(--lh-title);
+}
+
+h2 {
+  font-size: var(--text-md);
+  line-height: var(--lh-section);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* The focus ring is the page's (base.css): 2px accent, instant, never
+   animated. Inputs take it inset so it never collides with a
+   neighbouring field. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---------- Fields: the eight states, one at a time ---------- */
+/* Border never changes width; state moves to background, border colour
+   or outline. The edge is --color-muted: a field's edge needs 3:1
+   against what surrounds it, which a rule never has (gate 40). */
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--color-ink);
+  background: var(--color-paper-3);
+  border: 1px solid var(--color-muted);
+  outline: 2px solid transparent;
+  outline-offset: -3px;
+  border-radius: var(--radius-pill);
+  height: var(--control-height);
+  padding: 0 var(--space-md);
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  background: var(--color-paper);
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-color: var(--color-focus);
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+textarea {
+  height: auto;
+  padding: var(--space-sm) var(--space-md);
+  resize: vertical;
+  width: 100%;
+}
+
+select {
+  appearance: none;
+  padding-right: 32px;
+  /* The chevron is a data-URI image: var() cannot cross that boundary,
+     so the stroke is the encoded form of --color-muted (#9da2a8). */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239da2a8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* ---------- Shell: ruled T-frame ---------- */
+
+#app {
+  display: flex;
+  min-height: 100vh;
+}
+
+#sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  min-height: 100vh;
+  /* Top 16px centres the 32px wordmark on the 64px top bar
+     (16 + 32 = 48, centre 32 = the bar's centre); bottom 20px
+     keeps the last nav row off the viewport edge. */
+  padding: var(--space-md) 0 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-rule);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0 var(--gutter);
+  margin-bottom: 28px;
+}
+
+.wordmark-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+}
+
+.wordmark-name {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: var(--lh-title);
+  letter-spacing: 0.04em;
+}
+
+#nav {
+  display: flex;
+  flex-direction: column;
+  /* Fills the sidebar height so the utility divider below can push
+     Settings to the bottom (app-screens §3.2: utilities go last). */
+  flex: 1;
+}
+
+.nav-item {
+  position: relative;
+  height: 34px;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  /* Inactive nav is ink-2: two greys at most (ink-2 secondary,
+     muted meta). */
+  color: var(--color-ink-2);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+}
+
+.nav-item:hover {
+  color: var(--color-ink);
+}
+
+/* Active = brightness only: label ink-2 -> ink. No weight change. */
+.nav-item.is-active {
+  color: var(--color-ink);
+}
+
+/* 44px hit target on a 34px row, without changing its look. */
+.nav-item::before {
+  content: "";
+  position: absolute;
+  inset: -5px 0;
+}
+
+.nav-item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Hairline between the main nav and the utility group, inset by the
+   sidebar gutter on both sides. margin-top: auto pushes the divider
+   (and Settings below it) to the bottom of the sidebar. */
+.nav-divider {
+  margin: auto var(--space-lg) var(--space-sm);
+  border-top: 1px solid var(--color-rule);
+}
+
+#nav-backdrop {
+  display: none;
+}
+
+.main-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#topbar {
+  height: var(--topbar-height);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+#menu-btn {
+  display: none;
+}
+
+.topbar-search {
+  flex: 1;
+  max-width: 420px;
+}
+
+.topbar-search input {
+  width: 100%;
+  background: var(--color-paper-3);
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.topbar-status {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+#content {
+  flex: 1;
+  padding: var(--gutter);
+  min-width: 0;
+}
+
+/* ---------- Sticky sidebar: only the dashboard scrolls ---------- */
+/* Desktop (>900px): the app is exactly one viewport tall. The sidebar is
+   pinned full-height and scrolls internally if it ever overflows; the
+   top bar stays put with it; only main#content scrolls. The scroll is
+   contained at #app level (not body overflow) so the page itself never
+   scrolls and the inspector's measurements still see the full shell.
+   Phone (≤900px) is untouched: the sidebar stays a fixed Menu sheet
+   and the page scrolls normally. */
+@media (min-width: 901px) {
+  #app {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-rule-2) transparent;
+  }
+
+  #sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-rule-2);
+    border-radius: 3px;
+  }
+
+  #sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .main-col {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  #content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-rule-2) transparent;
+  }
+
+  #content::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  #content::-webkit-scrollbar-thumb {
+    background: var(--color-rule-2);
+    border-radius: 5px;
+  }
+
+  #content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ---------- Buttons: one filled primary a page ---------- */
+
+.btn {
+  position: relative;
+  height: var(--control-height);
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper-3);
+}
+
+.btn-primary:hover {
+  background: var(--color-ink-2);
+}
+
+.btn-primary:active {
+  background: var(--color-muted);
+}
+
+.btn-secondary {
+  background: var(--color-paper-2);
+  border-color: var(--color-rule);
+  color: var(--color-ink);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-rule-2);
+}
+
+.btn-secondary:active {
+  background: var(--color-paper);
+}
+
+.btn-text {
+  background: none;
+  color: var(--color-ink-2);
+  padding: 0 var(--space-sm);
+  height: 32px;
+  font-weight: 400;
+}
+
+.btn-text:hover {
+  color: var(--color-ink);
+}
+
+.btn-text:active {
+  color: var(--color-ink);
+  background: var(--color-paper-2);
+}
+
+/* Disabled is three channels together: opacity, cursor, and the
+   native disabled attribute (set by the app where it applies). */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* ---------- Type rhythm: one line-height per size ---------- */
+/* 12px text runs at 16px, 14px at 20px, 16px at 24px, 19.2px at 28px,
+   23px at 32px. Body, h1 and h2 carry their own; everything at 12px
+   shares this one rule so a caption never drifts. */
+.kpi-label,
+.kpi-unit,
+.count,
+.speed-window,
+.speed-note,
+.speed-delta,
+.dl-sub,
+.dl-url,
+.topbar-status,
+.error-note,
+.saved-note,
+.list-error,
+.dl-error,
+.pending-url,
+.pending-more,
+.verify,
+.schedule-next,
+.schedule-line,
+.today-sub,
+.tl-count,
+.scrub-count,
+.dl-table-head,
+.dl-num .unit,
+.grab-results .grab-link,
+.grab-results .grab-size,
+.grab-results .grab-kind {
+  line-height: var(--lh-small);
+}
+
+/* ---------- Press and hover: feedback, not entrance ---------- */
+/* One 120ms colour step on interactive elements; nothing moves in from
+   off-screen and nothing scales. Pressed is one lightness step past hover. */
+.btn,
+.nav-item,
+.tab,
+.cat-pill,
+.scrub-btn,
+.day-btn {
+  transition:
+    color 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.cat-pill:active,
+.tab:active,
+.scrub-btn:active,
+.day-btn:active {
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .nav-item,
+  .tab,
+  .cat-pill,
+  .scrub-btn,
+  .day-btn {
+    transition: none;
+  }
+}
+
+/* ---------- Icons: one outline set, currentColor, no containers ---------- */
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* Buttons carry icon + text: icon inherits the button colour, so the
+   active nav label (ink-2 -> ink) brightens its icon with it. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.btn-text {
+  gap: var(--space-xs);
+}
+
+.nav-item {
+  gap: var(--space-xs); /* label column lands at 24 + 16 + 8 = 48 (app-screens §3.2) */
+}
+
+.dl-actions .icon,
+.dl-phone-action .icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Delete stays neutral; only its hover takes the negative colour. */
+.btn-danger:hover {
+  color: var(--color-bad);
+}
+
+.search-field {
+  position: relative;
+}
+
+.search-field .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+}
+
+.search-field input {
+  width: 100%;
+  padding-left: 36px;
+}
+
+.toolbar .search-field {
+  flex: 1 1 240px;
+  max-width: 420px;
+}
+
+/* Empty state: one 32px muted outline icon, no circle, no tint. */
+.empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+  color: var(--color-muted);
+}
+
+.empty-icon .icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* ---------- Title row, KPIs, tabs, toolbar ---------- */
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: 20px;
+}
+
+/* Header pills: the category filter, built from the categories actually
+   in the data, All first. The row takes the spare width and scrolls
+   sideways instead of wrapping or pushing Add URL off the first screen.
+   The active pill is a lime-tinted selection (Console chip language);
+   the ink-filled primary (Add URL) stays the only ink-filled button. */
+.cat-pills {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: flex-end;
+}
+
+.cat-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-pill {
+  flex: none;
+  height: var(--control-height);
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule);
+  background: none;
+  color: var(--color-ink-2);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.cat-pill:hover {
+  color: var(--color-ink);
+}
+
+/* Active is a selection state, not a second primary: the Console chip
+   language (tinted accent-soft with accent text). The ink-filled
+   primary (Add URL) stays the only ink-filled button on the page (F4). */
+.cat-pill.is-active {
+  background: var(--color-accent-soft);
+  border-color: transparent;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.cat-pill:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Today panel: the vitals, as type in a panel ---------- */
+/* Row 1's 4/12: Downloaded today is the lead figure (mono, 23px), then
+   Active / Queued side by side on a 1px divider, then the Queue
+   state with its schedule line. One figure, one place: Now lives
+   only in the speed card, so it is not repeated here. The panel is a
+   flex column with space-between, so it fills the row height the
+   speed card sets without a blank band at its foot. */
+.bento-today {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  min-width: 0;
+  color: var(--color-ink);
+}
+
+.today-lead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.today-value {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: var(--lh-kpi);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.today-value .kpi-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.today-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--color-rule);
+  padding-top: var(--space-sm);
+}
+
+.today-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+.today-cell + .today-cell {
+  border-left: 1px solid var(--color-rule);
+  padding-left: var(--space-md);
+}
+
+.today-figure {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: var(--lh-title);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.today-queue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  border-top: 1px solid var(--color-rule);
+  padding-top: var(--space-sm);
+}
+
+.today-sub {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* One divided strip, not tiles: label over value, 1px dividers between
+   cells. No container at all — the figures are the product's own
+   (patterns: Figures that compare). */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: var(--space-lg);
+  color: var(--color-ink);
+}
+
+/* Usage varies its widths: the first cell is the lead figure. */
+#usage {
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: 20px;
+  min-width: 0;
+}
+
+.kpi + .kpi {
+  border-left: 1px solid var(--color-rule);
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--color-ink-2);
+}
+
+.kpi-value {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: var(--lh-kpi);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kpi-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+/* ---------- Bento grid (Downloads view) ---------- */
+/* Row 1: speed card 8/12 + Today panel 4/12. Row 2: the timeline
+   panel 12/12, the biggest block. Panels are paper on the paper-3
+   ground, 1px rule, radius 10; the download cards inside the timeline
+   panel take the paper-2 well step. */
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+}
+
+/* Update offer banner: a flat strip above the bento grid, same
+   paper/rule language as the panels. The version number is a
+   measured figure (mono); the changelog is a muted subline. */
+.update-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--gap);
+  color: var(--color-ink);
+}
+
+.update-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.update-banner-title {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.update-banner-title .update-version {
+  font-family: var(--font-outlier);
+  font-size: 13px;
+}
+
+.update-banner-notes {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--color-muted);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.update-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .update-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .update-banner-actions {
+    justify-content: flex-end;
+  }
+}
+
+.bento-speed {
+  grid-column: span 8;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--gap);
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  min-width: 0;
+  color: var(--color-ink);
+}
+
+.bento-queue {
+  grid-column: span 12;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  min-width: 0;
+  color: var(--color-ink);
+}
+
+/* The queue toolbar heads the panel: status pills on the left, the
+   count / sort / Start-Stop controls on the right. */
+.bento-queue .toolbar {
+  margin: 0 0 var(--space-sm);
+}
+
+/* Inside the timeline panel the download cards take the paper-2 well
+   step (the panel itself is paper); Completed keeps the flat paper
+   cards on the ground. */
+.bento-queue .tl-card {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+/* The scrubber is the timeline panel's footer strip: the panel's own
+   ground, separated by a 1px rule, bleeding to the panel's edges with
+   the bottom corners rounded to match. Completed keeps its
+   freestanding strip (base .scrubber below). */
+.bento-queue .scrubber {
+  margin: 20px -20px -20px;
+  padding: var(--space-sm) 20px;
+  border-top: 1px solid var(--color-rule);
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+}
+
+/* The empty state's padding reads as a blank band over 40px inside
+   the queue area (panel-void at 1440): 24px above the icon and
+   8px below the text both stay under it. */
+.bento-queue .empty-state {
+  padding: var(--space-lg) 0 var(--space-xs);
+}
+
+.speed-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.speed-title {
+  font-size: 16px;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.speed-window {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.speed-note {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.speed-chart svg {
+  display: block;
+  width: 100%;
+  height: 180px;
+}
+
+/* Chart labels are measurements: mono, muted. */
+.speed-chart text {
+  font-family: var(--font-outlier);
+  font-size: 12px;
+  fill: var(--color-muted);
+}
+
+/* The three window figures span the chart's height: Now at the top,
+   Average at the bottom, Peak between them. Without this the figures
+   end ~50px above the panel's bottom edge (panel-void at 1440) while
+   the chart fills the column beside them. */
+.speed-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.speed-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.speed-stat-value {
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: var(--lh-title);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.speed-stat-value .kpi-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+/* The Reading: one value at display size, in the measured face,
+   with its unit beside it. This is the instrument's lead figure. */
+.speed-now {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: var(--lh-kpi);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.speed-now .kpi-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+/* Delta of Now against the 5-minute average, with its baseline in the
+   same phrase. Colour says good or bad, not up or down: faster than
+   the average is lime, slower is red, no change is a muted dash. */
+.speed-delta {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.speed-delta.delta-up {
+  color: var(--color-accent);
+}
+
+.speed-delta.delta-down {
+  color: var(--color-bad);
+}
+
+/* Status pills in the timeline panel's header. Same pill language as
+   the header categories: inactive is an outlined pill in ink-2 text,
+   active is the lime-tinted selection. */
+.tabs {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.tab {
+  height: var(--control-height);
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule);
+  background: none;
+  color: var(--color-ink-2);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--color-ink);
+}
+
+/* Same selection language as the category pills (see above). */
+.tab.is-active {
+  background: var(--color-accent-soft);
+  border-color: transparent;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.tab:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-md);
+  margin: var(--space-lg) 0 var(--space-xs);
+}
+
+.toolbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+}
+
+.hint {
+  font-size: 14px;
+  color: var(--color-ink-2);
+  margin: 0 0 var(--space-xs);
+}
+
+/* ---------- Download table ---------- */
+
+.dl-table-head,
+.dl-row {
+  display: grid;
+  /* Actions column is 270px, not 150px: three icon+text row buttons
+     (Delete + Verify + Scan) measure 269px, and right-aligned buttons
+     start at the row edge minus their total width — a 150px column let
+     Delete paint over the status column's pill and record lines. */
+  grid-template-columns: minmax(0, 1fr) 110px 110px 80px 110px 270px;
+  column-gap: var(--space-md);
+  align-items: center;
+}
+
+.dl-table-head {
+  padding: var(--space-xs) 0;
+  font-size: 12px;
+  color: var(--color-ink-2);
+}
+
+.dl-table-head .num {
+  text-align: right;
+}
+
+.dl-row {
+  min-height: 72px;
+  padding: var(--space-sm) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.dl-row:hover {
+  outline: 1px solid var(--color-rule-2);
+  outline-offset: -1px;
+  border-radius: var(--radius-pill);
+}
+
+.dl-identity {
+  min-width: 0;
+}
+
+.dl-filename {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dl-url {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: var(--space-2xs);
+}
+
+/* Signature element: the per-segment strip. One block per segment, 6px
+   tall, 2px gaps — a data mark, not layout spacing (data-viz: bars
+   ≤24px thick, 2–4px gaps). Lime = done, bright lime = active,
+   red = failed, rule-2 = pending. */
+.dl-segments {
+  display: flex;
+  gap: var(--space-3xs);
+  margin-top: var(--space-xs);
+  height: 6px;
+}
+
+.dl-segments .seg {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 2px;
+  background: var(--color-rule-2);
+}
+
+.dl-segments .seg.is-done {
+  background: var(--color-accent);
+}
+
+.dl-segments .seg.is-active {
+  background: var(--color-accent-bright);
+}
+
+.dl-segments .seg.is-failed {
+  background: var(--color-bad);
+}
+
+.dl-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-rule);
+  overflow: hidden;
+  margin-top: var(--space-xs);
+}
+
+.dl-progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.dl-phone-action {
+  display: none;
+}
+
+.dl-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+}
+
+.dl-num .unit {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.dl-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: var(--space-2xs);
+}
+
+.dl-status {
+  text-align: right;
+}
+
+.dl-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2xs);
+}
+
+/* Status chips (Console: a chip is a label face in a 1px rule at 4px
+   radius, tinted by meaning). Downloading is tinted accent-soft,
+   failed is tinted bad-soft; the rest are ink on a rule edge. */
+.pill {
+  display: inline-block;
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: 4px;
+  border: 1px solid var(--color-rule);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pill-downloading {
+  background: var(--color-accent-soft);
+  border-color: transparent;
+  color: var(--color-accent);
+}
+
+.pill-completed {
+  background: none;
+  color: var(--color-ink);
+}
+
+.pill-failed {
+  background: var(--color-bad-soft);
+  border-color: transparent;
+  color: var(--color-bad);
+}
+
+.pill-paused,
+.pill-queued,
+.pill-cancelled {
+  background: none;
+  color: var(--color-ink);
+}
+
+.dl-error {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--color-bad);
+  margin-top: var(--space-xs);
+}
+
+/* The verify line is a record line: check + hash prefix, mono. */
+.verify {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: 12px;
+  margin-top: var(--space-2xs);
+  white-space: nowrap;
+}
+
+/* Long honest notes (stream fallback) wrap inside the status
+   column instead of painting past the card. */
+.verify-wrap {
+  white-space: normal;
+  text-align: right;
+}
+
+/* Honest no-merge note: a full-width footer row of its own, in the
+   muted subline size — the status column is too narrow for a
+   sentence, and the reason must be readable, not a tooltip. */
+.dl-stream-note {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-top: var(--space-2xs);
+}
+
+.verify svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+
+.verify-ok {
+  color: var(--color-accent);
+}
+
+.verify-bad {
+  color: var(--color-bad);
+}
+
+.verify-none {
+  color: var(--color-muted);
+}
+
+.empty-state {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 14px;
+  border-top: 1px solid var(--color-rule);
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--color-ink-2);
+}
+
+.empty-ways {
+  list-style: none;
+  margin: var(--space-md) auto 0;
+  padding: 0;
+  max-width: 480px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.empty-ways li {
+  color: var(--color-ink-2);
+}
+
+.skeleton-row {
+  height: 72px;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  margin: var(--space-sm) 0;
+}
+
+.list-error {
+  color: var(--color-bad);
+  font-size: 12px;
+  margin: var(--space-xs) 0;
+}
+
+.error-note {
+  color: var(--color-bad);
+  font-size: 12px;
+}
+
+.saved-note {
+  color: var(--color-accent);
+  font-size: 12px;
+}
+
+/* ---------- Timeline: the queue grouped per day ---------- */
+/* The reference's horizontal timeline, translated to the queue: each
+   day gets a header: a lime node on a 1px line, the date, the count,
+   and its downloads hang below as cards on a vertical rail, one dot
+   per card. A card is a paper-2 well, radius 10, carrying the same
+   row grid as the old table (identity + size + speed + ETA + status +
+   actions, segment strip, verify line); nothing about a row changed,
+   only its frame. The table head sits above the first group, offset
+   by the same 28px rail + 20px card padding so its columns line up
+   with the cards' columns. */
+
+.timeline-head {
+  margin: var(--space-xs) 20px var(--space-xs) 48px;
+  padding: 0;
+}
+
+.tl-group {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: var(--space-xs);
+}
+
+/* Vertical rail: from under the header node down through the cards.
+   Rule-2 marks the trail spine (Console: rule-2 marks a trail spine). */
+.tl-group::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 40px;
+  bottom: 24px;
+  width: 1px;
+  background: var(--color-rule-2);
+}
+
+.tl-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 20px 0 var(--space-sm) -28px;
+  min-height: 24px;
+}
+
+.tl-node {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.tl-date {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: var(--lh-section);
+  white-space: nowrap;
+  text-wrap: balance;
+}
+
+.tl-count {
+  font-size: 12px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.tl-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--color-rule);
+}
+
+.tl-card {
+  position: relative;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-md) 20px;
+  margin-bottom: var(--space-sm);
+  color: var(--color-ink);
+}
+
+/* One dot per card on the rail, centred on the rail's x (6px). */
+.tl-card::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--color-paper-3);
+  border: 1px solid var(--color-rule-2);
+}
+
+.tl-card:hover {
+  outline: 1px solid var(--color-rule-2);
+  outline-offset: -1px;
+}
+
+/* Inside a card the row is the card's content: no top rule, no
+   padding of its own, and the row hover outline moves to the card. */
+.tl-card .dl-row {
+  border-top: none;
+  padding: 0;
+  min-height: 0;
+}
+
+.tl-card .dl-row:hover {
+  outline: none;
+}
+
+/* Brief highlight when the scrubber jumps to a group. Colour only:
+   the date steps to the accent colour, then back. */
+.tl-group.tl-flash .tl-head .tl-date {
+  color: var(--color-accent);
+}
+
+/* ---------- Scrubber: time navigator under the timeline ---------- */
+/* One button per day in the data: a lime dot (the event mark) plus the
+   day and its count. On Downloads it scrolls to that day's group; on
+   Completed it filters the history to that day. "All" clears back to
+   the top / every day. */
+.scrubber {
+  display: flex;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-sm) var(--space-md);
+  margin-top: 20px;
+  color: var(--color-ink);
+}
+
+.scrubber::-webkit-scrollbar {
+  display: none;
+}
+
+.scrub-btn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: var(--control-height);
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-rule);
+  background: none;
+  color: var(--color-ink-2);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.scrub-btn:hover {
+  color: var(--color-ink);
+}
+
+/* Same selection language as the pills above. */
+.scrub-btn.is-active {
+  background: var(--color-accent-soft);
+  border-color: transparent;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.scrub-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.scrub-btn .scrub-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.scrub-btn.is-active .scrub-dot {
+  background: var(--color-accent);
+}
+
+.scrub-btn .scrub-count {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.scrub-btn.is-active .scrub-count {
+  color: var(--color-accent);
+}
+
+/* ---------- Settings: label column beside a panel, one row per section ---------- */
+
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-xs);
+}
+
+.setting-row {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: start;
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.setting-label label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: var(--lh-section);
+}
+
+.setting-desc {
+  margin: var(--space-3xs) 0 0;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.setting-panel {
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  color: var(--color-ink);
+}
+
+.setting-panel input,
+.setting-panel select,
+.setting-panel textarea {
+  width: 100%;
+  max-width: 320px;
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+}
+
+/* Short numeric fields: the panel hugs the field (160px: 120px field +
+   panel padding) instead of spanning the row with the right half blank. */
+.setting-panel--short {
+  width: 160px;
+}
+
+/* Text fields carry long values (paths, proxies): let them use the panel. */
+.setting-panel input[type="text"] {
+  max-width: 100%;
+}
+
+/* The switch is a checkbox with the same contract: native, focusable,
+   44px hit target via its own 36×20 box plus the label around it. */
+.setting-panel input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 36px;
+  height: 20px;
+  min-width: 36px;
+  max-width: 36px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--color-rule-2);
+  border: none;
+  color: var(--color-ink);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.setting-panel input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--color-ink);
+}
+
+.setting-panel input[type="checkbox"]:checked {
+  background: var(--color-accent);
+}
+
+.setting-panel input[type="checkbox"]:checked::after {
+  left: 18px;
+  background: var(--color-accent-ink);
+}
+
+.setting-panel input[type="checkbox"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.setting-check {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.setting-check .setting-desc {
+  margin-bottom: 0;
+}
+
+.settings-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+/* ---------- Daily schedule ---------- */
+
+.schedule-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.schedule-enable {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.schedule-times {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.schedule-times label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 14px;
+  color: var(--color-ink-2);
+}
+
+/* The panel rule caps inputs at 320px; time fields are short. */
+.schedule-times input[type="time"] {
+  width: auto;
+  max-width: none;
+}
+
+.schedule-days {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.day-btn {
+  background: var(--color-paper-3);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 12px;
+  color: var(--color-ink-2);
+  cursor: pointer;
+}
+
+.day-btn:hover {
+  color: var(--color-ink);
+}
+
+.day-btn.is-active {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.day-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.schedule-next {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-ink-2);
+}
+
+.schedule-line {
+  font-size: 12px;
+  color: var(--color-ink-2);
+}
+
+/* ---------- Modal ---------- */
+
+#modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+#modal-root[hidden] {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--color-scrim);
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 560px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-lg);
+  color: var(--color-ink);
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pending-url {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-ink-2);
+  word-break: break-all;
+}
+
+.pending-more {
+  font-size: 12px;
+  color: var(--color-accent);
+}
+
+.pending-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.pending-field > label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: var(--space-xs);
+}
+
+.pending-field select,
+.pending-field input {
+  width: 100%;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-section {
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.modal-section:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.modal-section > label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.modal-section > input[type="text"] {
+  width: 100%;
+}
+
+.modal-row {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.modal-row input[type="url"],
+.modal-row input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-row input[type="number"] {
+  width: 88px;
+}
+
+.modal-section .error-note,
+.modal-section .saved-note {
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+.grab-results {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.grab-results li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.grab-results .grab-link {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Kind badge: neutral chip, no colour on chrome. Size is tabular. */
+.grab-results .grab-kind {
+  flex: none;
+  font-size: 12px;
+  color: var(--color-ink-2);
+  border: 1px solid var(--color-rule);
+  border-radius: 4px;
+  padding: var(--space-2xs) var(--space-xs);
+  white-space: nowrap;
+}
+
+.grab-results .grab-size {
+  flex: none;
+  min-width: 64px;
+  font-size: 12px;
+  color: var(--color-ink-2);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ---------- Narrower desktop: drop the ETA column ---------- */
+
+@media (max-width: 1200px) {
+  .dl-table-head,
+  .dl-row {
+    grid-template-columns: minmax(0, 1fr) 100px 100px 100px;
+  }
+
+  .dl-table-head > div:last-child {
+    display: none;
+  }
+
+  .dl-col-eta {
+    display: none;
+  }
+
+  /* Row actions drop to a footer line of their own: at this width the
+     actions column cannot fit three icon+text buttons (269px) without
+     painting over the status column, and the labels stay — icon+text,
+     never icon-only. */
+  .dl-actions {
+    grid-column: 1 / -1;
+    margin-top: var(--space-xs);
+  }
+
+  .topbar-search {
+    max-width: 300px;
+  }
+}
+
+/* ---------- Phone: the sidebar becomes a sheet, not a rail ---------- */
+
+@media (max-width: 900px) {
+  #sidebar {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 30;
+    background: var(--color-paper-3);
+    border-right: 1px solid var(--color-rule);
+  }
+
+  body.nav-open #sidebar {
+    display: flex;
+  }
+
+  body.nav-open #nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 25;
+    background: var(--color-scrim);
+    border: none;
+    padding: 0;
+  }
+
+  #menu-btn {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  #topbar {
+    height: 56px;
+    padding: 0 var(--space-md);
+  }
+
+  .topbar-status {
+    display: none;
+  }
+
+  .topbar-search {
+    max-width: none;
+  }
+
+  #content {
+    padding: var(--space-md);
+  }
+
+  .dl-table-head,
+  .dl-row {
+    grid-template-columns: minmax(0, 1fr) 84px 96px;
+  }
+
+  .dl-col-speed,
+  .dl-col-eta,
+  .dl-col-actions {
+    display: none;
+  }
+
+  .dl-phone-action {
+    display: inline-block;
+    margin-top: var(--space-xs);
+    padding: 0;
+    height: 24px;
+  }
+
+  /* The verify line is longer than the 96px status column; let it wrap
+     inside the column instead of painting over the size cell's sub-line
+     (the "of … · 100%" line sits at the same height). */
+  .verify {
+    white-space: normal;
+    text-align: right;
+  }
+
+  .dl-phone-action .btn {
+    height: 24px;
+    padding: 0 var(--space-3xs);
+  }
+
+  .setting-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .bento {
+    grid-template-columns: 1fr;
+  }
+
+  /* The spans are written for the 12-column grid; on one column they
+     would force implicit columns and keep the panels side by side. */
+  .bento-speed,
+  .bento-today,
+  .bento-queue {
+    grid-column: 1 / -1;
+  }
+
+  /* Title row wraps: the pills take their own full-width row and
+     scroll sideways. */
+  .title-row {
+    flex-wrap: wrap;
+  }
+
+  .cat-pills {
+    flex: 1 1 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+
+  /* The timeline rail needs the 28px indent; without it the dots and
+     the line are decoration on a 390px screen, so they hide and the
+     groups run flush. */
+  .tl-group {
+    padding-left: 0;
+  }
+
+  .tl-group::before,
+  .tl-card::before {
+    display: none;
+  }
+
+  .tl-head {
+    margin-left: 0;
+  }
+
+  .timeline-head {
+    margin: var(--space-xs) var(--space-md);
+  }
+
+  .tl-card {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .bento-speed {
+    grid-template-columns: 1fr;
+  }
+
+  .kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #usage {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Odd count in a 2-column grid: the last cell takes the full width. */
+  #usage .kpi:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+  .kpi:nth-child(3) {
+    border-left: none;
+  }
+
+  .kpi:nth-child(n + 3) {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .toolbar-right {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .modal {
+    padding: 20px;
+  }
+}

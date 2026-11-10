@@ -1,0 +1,33 @@
+{
+  "action": {
+    "default_title": "ZDM: auto-download ON \u2014 click to turn off"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "description": "Downloads started in the browser are cancelled there and handed to ZDM (ZDM Download Manager) automatically. Click the toolbar icon to toggle.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA48dDcY3Y1VMT1+YgaMBCrn5BzxgTqdFS3wAmrTy8AIpBBV57yIER3h/lJBk9/T9r+QAkHkzfoAho6t+cBiPVqWq2zdRj28mcLPvOLM3VZIWXKDxFKhEk/vnY1DjTOoC1R3cGsx7Sbbe1jf+VgtSH+GEAhHg0Wt347Dd+in15449Jt+lCFIPRiI9OEaJzILrhVuILJAmsKJnTVwgANqo31ZXAiNq2+J1wDNN8Wf8O4pvg3qznlHPV2JgUxKPvPSF1ydb8bNbgdfWUzCuxxxm64+woWrWKqyc0hxjuXDFmmkbKX2zXTq2aAR9eDdG5SSljGA/23KfGYUAvksMJs1FYXwIDAQAB",
+  "manifest_version": 3,
+  "name": "ZDM Browser Integration",
+  "permissions": [
+    "downloads",
+    "nativeMessaging",
+    "contextMenus",
+    "activeTab",
+    "storage"
+  ],
+  "version": "1.1.0",
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}

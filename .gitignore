@@ -1,0 +1,13 @@
+# Build outputs
+/target/
+src-tauri/target/
+node_modules/
+dist/
+release/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store

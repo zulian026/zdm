@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ZDM
+Comment=ZDM Download Manager
+Exec=/home/zyan/workspace/zdm-tauri/release/zdm
+Icon=/home/zyan/workspace/zdm-tauri/src-tauri/icons/icon.png
+Categories=Network;FileTransfer;
+Terminal=false
+StartupWMClass=zdm

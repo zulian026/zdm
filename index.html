@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZDM Download Manager</title>
+    <meta name="description" content="ZDM is a download manager for Linux: queue files, watch their speed, verify their checksums." />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <div class="wordmark">
+          <img class="wordmark-icon" src="/src/assets/zdm-icon.png" alt="" width="32" height="32" />
+          <span class="wordmark-name">ZDM</span>
+        </div>
+        <nav id="nav" aria-label="Main">
+          <button class="nav-item is-active" data-view="downloads" type="button">Downloads</button>
+          <button class="nav-item" data-view="completed" type="button">Completed</button>
+          <div class="nav-divider" aria-hidden="true"></div>
+          <button class="nav-item" data-view="settings" type="button">Settings</button>
+        </nav>
+      </aside>
+      <button id="nav-backdrop" type="button" aria-label="Close menu" tabindex="-1"></button>
+
+      <div class="main-col">
+        <header id="topbar">
+          <button id="menu-btn" class="btn btn-text" type="button" aria-label="Open menu" aria-expanded="false">Menu</button>
+          <div class="topbar-search search-field">
+            <input id="top-search" type="search" placeholder="Search downloads" aria-label="Search downloads" autocomplete="off" />
+          </div>
+          <div class="topbar-right">
+            <span id="topbar-status" class="topbar-status"></span>
+          </div>
+        </header>
+
+        <main id="content">
+          <div class="title-row">
+            <h1 id="view-title">Downloads</h1>
+            <div id="cat-pills" class="cat-pills" role="group" aria-label="Filter by category">
+              <button class="cat-pill is-active" data-cat="all" type="button">All</button>
+            </div>
+            <button id="add-url-btn" class="btn btn-primary" type="button">Add URL</button>
+          </div>
+
+          <section id="view-downloads" class="view">
+            <div id="update-banner" class="update-banner" hidden>
+              <div class="update-banner-text">
+                <span class="update-banner-title" id="update-banner-title"></span>
+                <span class="update-banner-notes" id="update-banner-notes"></span>
+              </div>
+              <div class="update-banner-actions">
+                <button id="update-download" class="btn btn-primary" type="button">Download</button>
+                <button id="update-dismiss" class="btn btn-text" type="button">Dismiss</button>
+              </div>
+            </div>
+            <div class="bento">
+              <div class="bento-speed">
+                <div class="speed-card">
+                  <div class="speed-head">
+                    <h2 class="speed-title">Total speed</h2>
+                    <span class="speed-window">Last 5 minutes · <span id="speed-unit">KB/s</span></span>
+                    <span id="speed-note" class="speed-note" hidden>No active downloads</span>
+                  </div>
+                  <div id="speed-chart" class="speed-chart" role="img" aria-label="Total download speed over the last 5 minutes"></div>
+                </div>
+                <div class="speed-side">
+                  <span class="kpi-label">Now</span>
+                  <span class="speed-now" id="speed-now">0 <span class="kpi-unit">KB/s</span></span>
+                  <span class="speed-stat"><span class="kpi-label">Peak</span><span class="speed-stat-value" id="speed-peak">0 <span class="kpi-unit">KB/s</span></span></span>
+                  <span class="speed-stat"><span class="kpi-label">Average</span><span class="speed-stat-value" id="speed-average">0 <span class="kpi-unit">KB/s</span></span></span>
+                  <span class="speed-delta" id="speed-delta">No change vs 5-min average</span>
+                </div>
+              </div>
+
+              <div class="bento-today" aria-label="Today">
+                <div class="today-lead">
+                  <span class="kpi-label">Downloaded today</span>
+                  <span class="today-value" id="vit-today">0 B</span>
+                </div>
+                <div class="today-grid">
+                  <div class="today-cell">
+                    <span class="kpi-label">Active</span>
+                    <span class="today-figure" id="vit-active">0</span>
+                  </div>
+                  <div class="today-cell">
+                    <span class="kpi-label">Queued</span>
+                    <span class="today-figure" id="vit-queued">0</span>
+                  </div>
+                </div>
+                <div class="today-queue">
+                  <span class="kpi-label">Queue</span>
+                  <span class="today-figure" id="vit-queue">Idle</span>
+                  <span class="today-sub schedule-line" id="schedule-line">No daily schedule</span>
+                </div>
+              </div>
+
+              <div class="bento-queue">
+                <div class="toolbar">
+                  <div class="tabs" role="tablist" aria-label="Filter downloads">
+                    <button class="tab is-active" data-tab="all" role="tab" type="button">All</button>
+                    <button class="tab" data-tab="downloading" role="tab" type="button">Downloading</button>
+                    <button class="tab" data-tab="completed" role="tab" type="button">Completed</button>
+                    <button class="tab" data-tab="failed" role="tab" type="button">Failed</button>
+                  </div>
+                  <div class="toolbar-right">
+                    <span id="count" class="count">0 downloads</span>
+                    <select id="sort" aria-label="Sort downloads">
+                      <option value="newest">Newest</option>
+                      <option value="fastest">Fastest</option>
+                      <option value="largest">Largest</option>
+                    </select>
+                    <button id="queue-start" class="btn btn-text" type="button">Start queue</button>
+                    <button id="queue-stop" class="btn btn-text" type="button">Stop queue</button>
+                  </div>
+                </div>
+
+                <div id="list-error" class="list-error" hidden></div>
+                <button id="list-retry" class="btn btn-text" type="button" hidden>Retry</button>
+                <div id="download-list">
+                  <div class="skeleton-row" aria-hidden="true"></div>
+                  <div class="skeleton-row" aria-hidden="true"></div>
+                  <div class="skeleton-row" aria-hidden="true"></div>
+                </div>
+                <div id="scrubber" class="scrubber" hidden></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="view-completed" class="view" hidden>
+            <p id="completed-hint" class="hint">Finished downloads appear here.</p>
+            <div class="toolbar">
+              <div class="search-field">
+                <input id="completed-search" type="search" placeholder="Search completed downloads" aria-label="Search completed downloads" autocomplete="off" />
+              </div>
+              <div class="toolbar-right">
+                <select id="history-category" aria-label="Filter by category">
+                  <option value="all">All categories</option>
+                </select>
+                <select id="history-range" aria-label="Filter by date">
+                  <option value="all">All time</option>
+                  <option value="today">Today</option>
+                  <option value="week">This week</option>
+                </select>
+                <span id="completed-count" class="count">0 completed</span>
+              </div>
+            </div>
+            <div id="completed-list">
+              <div class="skeleton-row" aria-hidden="true"></div>
+              <div class="skeleton-row" aria-hidden="true"></div>
+            </div>
+            <div id="completed-scrubber" class="scrubber" hidden></div>
+          </section>
+
+          <section id="view-settings" class="view" hidden>
+            <div id="usage" class="kpis" aria-label="Usage">
+              <div class="kpi"><span class="kpi-label">Active downloads</span><span class="kpi-value" id="usage-active">0</span></div>
+              <div class="kpi"><span class="kpi-label">Downloaded today</span><span class="kpi-value" id="usage-today">0 B</span></div>
+              <div class="kpi"><span class="kpi-label">Total completed</span><span class="kpi-value" id="usage-completed">0</span></div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-connections">Connections</label>
+                  <p class="setting-desc">Segments per download, 1 to 32.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-connections" type="number" min="1" max="32" step="1" value="8" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-max-concurrent">Max concurrent</label>
+                  <p class="setting-desc">Downloads running at the same time.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-max-concurrent" type="number" min="1" step="1" value="3" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-download-dir">Download directory</label>
+                  <p class="setting-desc">Where finished files are saved.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-download-dir" type="text" placeholder="~/Downloads" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-speed-limit">Speed limit KB/s</label>
+                  <p class="setting-desc">0 means unlimited.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-speed-limit" type="number" min="0" step="1" value="0" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-proxy">Proxy</label>
+                  <p class="setting-desc">Leave empty to use the environment proxy.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-proxy" type="text" placeholder="" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-schedule">Schedule queue start</label>
+                  <p class="setting-desc">Queue starts automatically at this time.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-schedule" type="datetime-local" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label id="set-daily-label">Daily schedule</label>
+                  <p class="setting-desc">Queue runs only inside this window, on the selected days. Only while ZDM is running. Turn on “Start ZDM when I log in” below so it is running from login.</p>
+                </div>
+                <div class="setting-panel">
+                  <div class="schedule-fields">
+                    <label class="schedule-enable">
+                      <input id="set-schedule-enabled" type="checkbox" />
+                      <span>Enabled</span>
+                    </label>
+                    <div class="schedule-times">
+                      <label>From <input id="set-schedule-start" type="time" value="23:00" /></label>
+                      <label>To <input id="set-schedule-stop" type="time" value="06:00" /></label>
+                    </div>
+                    <div class="schedule-days" role="group" aria-label="Days of the week">
+                      <button type="button" class="day-btn is-active" data-day="0" aria-pressed="true">Mon</button>
+                      <button type="button" class="day-btn is-active" data-day="1" aria-pressed="true">Tue</button>
+                      <button type="button" class="day-btn is-active" data-day="2" aria-pressed="true">Wed</button>
+                      <button type="button" class="day-btn is-active" data-day="3" aria-pressed="true">Thu</button>
+                      <button type="button" class="day-btn is-active" data-day="4" aria-pressed="true">Fri</button>
+                      <button type="button" class="day-btn is-active" data-day="5" aria-pressed="true">Sat</button>
+                      <button type="button" class="day-btn is-active" data-day="6" aria-pressed="true">Sun</button>
+                    </div>
+                    <p id="schedule-next" class="schedule-next" hidden></p>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-ask-before-download">Ask before downloading</label>
+                  <p class="setting-desc">Browser downloads show a confirmation dialog before starting. Turn off to auto-start them like before.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-ask-before-download" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-minimize-to-tray">Minimize to tray</label>
+                  <p class="setting-desc">Minimizing the window hides it to the system tray.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-minimize-to-tray" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-close-to-tray">Close to tray</label>
+                  <p class="setting-desc">Closing the window hides it to the system tray instead of quitting. Quit from the tray menu.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-close-to-tray" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-desktop-notifications">Desktop notifications</label>
+                  <p class="setting-desc">Show a desktop notification when a download finishes or fails. Only when the ZDM window is not in focus.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-desktop-notifications" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-autostart">Start ZDM when I log in</label>
+                  <p class="setting-desc">ZDM starts hidden in the system tray at login, so the daily schedule can run overnight. Installs the app menu entry too.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-autostart" type="checkbox" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-resume-on-startup">Resume downloads on startup</label>
+                  <p class="setting-desc">Interrupted and queued downloads continue from where they left off when ZDM opens. Manually paused downloads stay paused.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-resume-on-startup" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-clamav-scan">Scan downloads with ClamAV</label>
+                  <p class="setting-desc">Finished downloads are scanned for viruses. A virus marks the download failed — the file is kept on disk. <span id="clamav-status">Memeriksa status ClamAV…</span></p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-clamav-scan" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-update-manifest-url">Update manifest URL</label>
+                  <p class="setting-desc">URL of the update manifest (JSON). Leave empty to disable update checks. ZDM checks once a day at startup.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-update-manifest-url" type="url" placeholder="https://example.com/zdm/version.json" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label>Check for updates</label>
+                  <p class="setting-desc"><span id="update-status">Update checks have not run yet.</span></p>
+                </div>
+                <div class="setting-panel">
+                  <button id="check-updates" class="btn btn-secondary" type="button">Check now</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button id="save-settings" class="btn btn-primary" type="button">Save</button>
+              <button id="schedule-queue" class="btn btn-text" type="button">Schedule queue</button>
+              <span id="settings-saved" class="saved-note" hidden>Saved</span>
+              <span id="settings-error" class="error-note" hidden></span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-root" hidden>
+      <div class="modal-backdrop" id="modal-backdrop"></div>
+      <div class="modal" id="pending-modal" role="dialog" aria-modal="true" aria-labelledby="pending-title" hidden>
+        <div class="modal-head">
+          <h2 id="pending-title">Download File Info</h2>
+          <span id="pending-more" class="pending-more" hidden></span>
+        </div>
+
+        <div class="modal-section">
+          <label for="pending-filename">File name</label>
+          <input id="pending-filename" type="text" />
+        </div>
+
+        <div class="modal-section">
+          <label>URL</label>
+          <p id="pending-url" class="pending-url"></p>
+          <p class="setting-desc">Size: <span id="pending-size">Unknown</span></p>
+        </div>
+
+        <div class="modal-section">
+          <label for="pending-dest">Save to folder</label>
+          <input id="pending-dest" type="text" />
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-row">
+            <div class="pending-field">
+              <label for="pending-category">Category</label>
+              <select id="pending-category">
+                <option value="General">General</option>
+                <option value="Documents">Documents</option>
+                <option value="Music">Music</option>
+                <option value="Video">Video</option>
+                <option value="Pictures">Pictures</option>
+                <option value="Programs">Programs</option>
+                <option value="Compressed">Compressed</option>
+              </select>
+            </div>
+            <div class="pending-field">
+              <label for="pending-connections">Connections</label>
+              <input id="pending-connections" type="number" min="1" max="32" step="1" value="8" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <label for="pending-sha256">Expected SHA-256 (optional)</label>
+          <input id="pending-sha256" type="text" inputmode="latin" placeholder="64 hex characters" spellcheck="false" autocomplete="off" />
+          <p class="setting-desc">The download fails if the file does not match this hash.</p>
+        </div>
+
+        <p class="hint">Cancelling means the file is not downloaded. The browser download was already stopped when the link was intercepted. Click the link again to retry.</p>
+        <p id="pending-error" class="error-note" hidden></p>
+        <div class="modal-actions">
+          <button id="pending-start" class="btn btn-primary" type="button">Start Download</button>
+          <button id="pending-queue" class="btn btn-secondary" type="button">Add to Queue</button>
+          <button id="pending-cancel" class="btn btn-text" type="button">Cancel</button>
+        </div>
+      </div>
+
+      <div class="modal" id="add-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-head">
+          <h2 id="modal-title">Add download</h2>
+          <button id="modal-close" class="btn btn-text" type="button" aria-label="Close">Close</button>
+        </div>
+
+        <div class="modal-section">
+          <label for="add-url">URL</label>
+          <div class="modal-row">
+            <input id="add-url" type="url" placeholder="https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso" />
+            <input id="add-connections" type="number" min="1" max="32" step="1" value="8" aria-label="Connections" title="Connections" />
+            <button id="add-download" class="btn btn-primary" type="button">Add</button>
+          </div>
+          <p id="add-error" class="error-note" hidden></p>
+        </div>
+
+        <div class="modal-section">
+          <label for="add-sha256">Expected SHA-256 (optional)</label>
+          <input id="add-sha256" type="text" inputmode="latin" placeholder="64 hex characters" spellcheck="false" autocomplete="off" />
+          <p class="setting-desc">The download fails if the file does not match this hash.</p>
+        </div>
+
+        <div class="modal-section">
+          <label for="batch-urls">Batch: one URL per line</label>
+          <textarea id="batch-urls" rows="6" placeholder="https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso&#10;https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.8.0-amd64-netinst.iso"></textarea>
+          <div class="modal-row">
+            <button id="add-batch" class="btn btn-secondary" type="button">Add all</button>
+            <span id="batch-note" class="saved-note" hidden></span>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <label for="grab-url">Site Grabber: page URL</label>
+          <div class="modal-row">
+            <input id="grab-url" type="url" placeholder="https://releases.ubuntu.com/24.04/" />
+            <button id="grab-links" class="btn btn-secondary" type="button">Grab</button>
+          </div>
+          <p id="grab-error" class="error-note" hidden></p>
+          <ul id="grab-results" class="grab-results"></ul>
+          <p class="setting-desc">Video and audio found on the page. blob: sources can’t be downloaded. .m3u8/.mpd streams are downloaded segment by segment and merged into one video; live streams are not supported, and DASH needs ffmpeg.</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

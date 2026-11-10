@@ -1,0 +1,7 @@
+render tier: 5 screenshots in /home/hatch/workspace/zdm-tauri/.hallmark/shots (1280x800, 1440x900, 1920x1080 folds; 1440 and 375 full pages)
+src/styles.css
+  WARN F4 :1561 2 filled primary-button recipes: .btn-primary + .scrub-btn .scrub-dot | fix: One filled primary per page; demote the rest to outline/quiet variants
+  WARN F7 :771 same container recipe on 7 selectors (.bento-today, .bento-speed, .bento-queue, .skel…...) | fix: Vary weight, radius, or fill by role; not every box is the same box
+sloplint: 0 FAIL, 2 WARN across 4 file(s) and 1 URL(s).
+kept: fields 29/29, headings 4/4, figures 2/2; before 31 FAIL, 33 REFLEX, now 0 FAIL, 0 REFLEX
+compare: .hallmark/compare.html shows before and after side by side

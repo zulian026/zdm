@@ -1,0 +1,629 @@
+<!doctype html>
+<!-- INSPECTION PREVIEW ONLY — not shipped. Mirrors index.html's shell and renders
+     the same row markup as src/main.ts (same classes) from a sample dataset whose
+     numbers add up (segment bytes sum to downloaded; ETAs = remaining / speed). -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZDM Download Manager</title>
+    <link rel="stylesheet" href="../src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <div class="wordmark">
+          <img class="wordmark-icon" src="../src/assets/zdm-icon.png" alt="" width="32" height="32" />
+          <span class="wordmark-name">ZDM</span>
+        </div>
+        <nav id="nav" aria-label="Main">
+          <button class="nav-item is-active" data-view="downloads" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>`,
+  ),
+  checkCircle: svg(
+    `<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>`,
+  ),
+  settings: svg(
+    `<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>`,
+  ),
+  plus: svg(`<path d="M12 5v14"/><path d="M5 12h14"/></svg>Downloads</button>
+          <button class="nav-item" data-view="completed" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>Completed</button>
+          <button class="nav-item" data-view="settings" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Settings</button>
+        </nav>
+      </aside>
+      <button id="nav-backdrop" type="button" aria-label="Close menu" tabindex="-1"></button>
+
+      <div class="main-col">
+        <header id="topbar">
+          <button id="menu-btn" class="btn btn-text" type="button" aria-label="Open menu" aria-expanded="false">Menu</button>
+          <div class="topbar-search search-field">
+            <span class="search-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <input id="top-search" type="search" placeholder="Search downloads" aria-label="Search downloads" autocomplete="off" />
+          </div>
+          <div class="topbar-right">
+            <span id="topbar-status" class="topbar-status"></span>
+          </div>
+        </header>
+
+        <main id="content">
+          <div class="title-row">
+            <h1 id="view-title">Downloads</h1>
+            <button id="add-url-btn" class="btn btn-primary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Add URL</button>
+          </div>
+
+          <section id="view-downloads" class="view">
+            <div id="kpis" class="kpis" aria-label="Download overview">
+              <div class="kpi"><span class="kpi-label">Active</span><span class="kpi-value" id="kpi-active">0</span></div>
+              <div class="kpi"><span class="kpi-label">Total speed</span><span class="kpi-value" id="kpi-speed">0 KB/s</span></div>
+              <div class="kpi"><span class="kpi-label">Downloaded today</span><span class="kpi-value" id="kpi-today">0 B</span></div>
+              <div class="kpi"><span class="kpi-label">Queued</span><span class="kpi-value" id="kpi-queued">0</span></div>
+            </div>
+
+            <div class="speed-row">
+              <div class="speed-card">
+                <div class="speed-head">
+                  <h2 class="speed-title">Total speed</h2>
+                  <span class="speed-window">Last 5 minutes · <span id="speed-unit">MB/s</span></span>
+                  <span id="speed-note" class="speed-note" hidden>No active downloads</span>
+                </div>
+                <div id="speed-chart" class="speed-chart" role="img" aria-label="Total download speed over the last 5 minutes"></div>
+              </div>
+              <div class="speed-side">
+                <span class="kpi-label">Now</span>
+                <span class="speed-now" id="speed-now">20.2 <span class="kpi-unit">MB/s</span></span>
+                <span class="speed-stat"><span class="kpi-label">Peak</span><span class="speed-stat-value" id="speed-peak">21.5 <span class="kpi-unit">MB/s</span></span></span>
+                <span class="speed-stat"><span class="kpi-label">Average</span><span class="speed-stat-value" id="speed-average">13.9 <span class="kpi-unit">MB/s</span></span></span>
+              </div>
+            </div>
+
+            <div class="tabs" role="tablist" aria-label="Filter downloads">
+              <button class="tab is-active" data-tab="all" role="tab" type="button">All</button>
+              <button class="tab" data-tab="downloading" role="tab" type="button">Downloading</button>
+              <button class="tab" data-tab="completed" role="tab" type="button">Completed</button>
+              <button class="tab" data-tab="failed" role="tab" type="button">Failed</button>
+            </div>
+
+            <div class="toolbar">
+              <div class="toolbar-right">
+                <span id="count" class="count">0 downloads</span>
+                <select id="sort" aria-label="Sort downloads">
+                  <option value="newest">Newest</option>
+                  <option value="fastest">Fastest</option>
+                  <option value="largest">Largest</option>
+                </select>
+                <button id="queue-start" class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m7 4.5 13 7.5-13 7.5z"/></svg>Start queue</button>
+                <button id="queue-stop" class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5v14"/><path d="M15 5v14"/></svg>Stop queue</button>
+              </div>
+            </div>
+
+            <div id="list-error" class="list-error" hidden></div>
+            <button id="list-retry" class="btn btn-text" type="button" hidden>Retry</button>
+            <div id="download-list">
+              <div class="skeleton-row" aria-hidden="true"></div>
+              <div class="skeleton-row" aria-hidden="true"></div>
+              <div class="skeleton-row" aria-hidden="true"></div>
+            </div>
+          </section>
+
+          <section id="view-completed" class="view" hidden>
+            <p id="completed-hint" class="hint">Finished downloads appear here.</p>
+            <div class="toolbar">
+              <div class="search-field"><span class="search-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+              <input id="completed-search" type="search" placeholder="Search completed downloads" aria-label="Search completed downloads" autocomplete="off" /></div>
+              <div class="toolbar-right">
+                <select id="history-category" aria-label="Filter by category">
+                  <option value="all">All categories</option>
+                </select>
+                <select id="history-range" aria-label="Filter by date">
+                  <option value="all">All time</option>
+                  <option value="today">Today</option>
+                  <option value="week">This week</option>
+                </select>
+                <span id="completed-count" class="count">0 completed</span>
+              </div>
+            </div>
+            <div id="completed-list">
+              <div class="skeleton-row" aria-hidden="true"></div>
+              <div class="skeleton-row" aria-hidden="true"></div>
+            </div>
+          </section>
+
+          <section id="view-settings" class="view" hidden>
+            <div id="usage" class="kpis" aria-label="Usage">
+              <div class="kpi"><span class="kpi-label">Active downloads</span><span class="kpi-value" id="usage-active">0</span></div>
+              <div class="kpi"><span class="kpi-label">Downloaded today</span><span class="kpi-value" id="usage-today">0 B</span></div>
+              <div class="kpi"><span class="kpi-label">Total completed</span><span class="kpi-value" id="usage-completed">0</span></div>
+            </div>
+
+            <div class="settings-grid">
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-connections">Connections</label>
+                  <p class="setting-desc">Segments per download, 1 to 32.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-connections" type="number" min="1" max="32" step="1" value="8" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-max-concurrent">Max concurrent</label>
+                  <p class="setting-desc">Downloads running at the same time.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-max-concurrent" type="number" min="1" step="1" value="3" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-download-dir">Download directory</label>
+                  <p class="setting-desc">Where finished files are saved.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-download-dir" type="text" placeholder="~/Downloads" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-speed-limit">Speed limit KB/s</label>
+                  <p class="setting-desc">0 means unlimited.</p>
+                </div>
+                <div class="setting-panel setting-panel--short">
+                  <input id="set-speed-limit" type="number" min="0" step="1" value="0" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-proxy">Proxy</label>
+                  <p class="setting-desc">Leave empty to use the environment proxy.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-proxy" type="text" placeholder="" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-schedule">Schedule queue start</label>
+                  <p class="setting-desc">Queue starts automatically at this time.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-schedule" type="datetime-local" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label id="set-daily-label">Daily schedule</label>
+                  <p class="setting-desc">Queue runs only inside this window, on the selected days. Only while ZDM is running — it does not start the app by itself.</p>
+                </div>
+                <div class="setting-panel">
+                  <div class="schedule-fields">
+                    <label class="schedule-enable">
+                      <input id="set-schedule-enabled" type="checkbox" checked />
+                      <span>Enabled</span>
+                    </label>
+                    <div class="schedule-times">
+                      <label>From <input id="set-schedule-start" type="time" value="23:00" /></label>
+                      <label>To <input id="set-schedule-stop" type="time" value="06:00" /></label>
+                    </div>
+                    <div class="schedule-days" role="group" aria-label="Days of the week">
+                      <button type="button" class="day-btn is-active" data-day="0" aria-pressed="true">Mon</button>
+                      <button type="button" class="day-btn is-active" data-day="1" aria-pressed="true">Tue</button>
+                      <button type="button" class="day-btn is-active" data-day="2" aria-pressed="true">Wed</button>
+                      <button type="button" class="day-btn is-active" data-day="3" aria-pressed="true">Thu</button>
+                      <button type="button" class="day-btn is-active" data-day="4" aria-pressed="true">Fri</button>
+                      <button type="button" class="day-btn is-active" data-day="5" aria-pressed="true">Sat</button>
+                      <button type="button" class="day-btn is-active" data-day="6" aria-pressed="true">Sun</button>
+                    </div>
+                    <p id="schedule-next" class="schedule-next">Queue starts today 23:00</p>
+                  </div>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-ask-before-download">Ask before downloading</label>
+                  <p class="setting-desc">Browser downloads show a confirmation dialog before starting. Turn off to auto-start them like before.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-ask-before-download" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-minimize-to-tray">Minimize to tray</label>
+                  <p class="setting-desc">Minimizing the window hides it to the system tray.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-minimize-to-tray" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-close-to-tray">Close to tray</label>
+                  <p class="setting-desc">Closing the window hides it to the system tray instead of quitting. Quit from the tray menu.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-close-to-tray" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-desktop-notifications">Desktop notifications</label>
+                  <p class="setting-desc">Show a desktop notification when a download finishes or fails. Only when the ZDM window is not in focus.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-desktop-notifications" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-autostart">Start ZDM when I log in</label>
+                  <p class="setting-desc">ZDM starts hidden in the system tray at login, so the daily schedule can run overnight. Installs the app menu entry too.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-autostart" type="checkbox" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-resume-on-startup">Resume downloads on startup</label>
+                  <p class="setting-desc">Interrupted and queued downloads continue from where they left off when ZDM opens. Manually paused downloads stay paused.</p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-resume-on-startup" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-clamav-scan">Scan downloads with ClamAV</label>
+                  <p class="setting-desc">Finished downloads are scanned for viruses. A virus marks the download failed — the file is kept on disk. <span id="clamav-status">ClamAV 1.5.4 terpasang — download selesai dipindai otomatis.</span></p>
+                </div>
+                <div class="setting-panel setting-check">
+                  <input id="set-clamav-scan" type="checkbox" checked />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label for="set-update-manifest-url">Update manifest URL</label>
+                  <p class="setting-desc">URL of the update manifest (JSON). Leave empty to disable update checks. ZDM checks once a day at startup.</p>
+                </div>
+                <div class="setting-panel">
+                  <input id="set-update-manifest-url" type="url" placeholder="https://example.com/zdm/version.json" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-label">
+                  <label>Check for updates</label>
+                  <p class="setting-desc"><span id="update-status">ZDM 0.2.0 is available. Checked 10 Nov, 12:00.</span></p>
+                </div>
+                <div class="setting-panel">
+                  <button id="check-updates" class="btn btn-secondary" type="button">Check now</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <button id="save-settings" class="btn btn-primary" type="button">Save</button>
+              <button id="schedule-queue" class="btn btn-text" type="button">Schedule queue</button>
+              <span id="settings-saved" class="saved-note" hidden>Saved</span>
+              <span id="settings-error" class="error-note" hidden></span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-root" hidden>
+      <div class="modal-backdrop" id="modal-backdrop"></div>
+      <div class="modal" id="pending-modal" role="dialog" aria-modal="true" aria-labelledby="pending-title" hidden>
+        <div class="modal-head">
+          <h2 id="pending-title">Download File Info</h2>
+          <span id="pending-more" class="pending-more" hidden></span>
+        </div>
+
+        <div class="modal-section">
+          <label for="pending-filename">File name</label>
+          <input id="pending-filename" type="text" />
+        </div>
+
+        <div class="modal-section">
+          <label>URL</label>
+          <p id="pending-url" class="pending-url"></p>
+          <p class="setting-desc">Size: <span id="pending-size">Unknown</span></p>
+        </div>
+
+        <div class="modal-section">
+          <label for="pending-dest">Save to folder</label>
+          <input id="pending-dest" type="text" />
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-row">
+            <div class="pending-field">
+              <label for="pending-category">Category</label>
+              <select id="pending-category">
+                <option value="General">General</option>
+                <option value="Documents">Documents</option>
+                <option value="Music">Music</option>
+                <option value="Video">Video</option>
+                <option value="Pictures">Pictures</option>
+                <option value="Programs">Programs</option>
+                <option value="Compressed">Compressed</option>
+              </select>
+            </div>
+            <div class="pending-field">
+              <label for="pending-connections">Connections</label>
+              <input id="pending-connections" type="number" min="1" max="32" step="1" value="8" />
+            </div>
+          </div>
+        </div>
+
+        <p class="hint">Cancelling means the file is not downloaded. The browser download was already stopped when the link was intercepted. Click the link again to retry.</p>
+        <p id="pending-error" class="error-note" hidden></p>
+        <div class="modal-actions">
+          <button id="pending-start" class="btn btn-primary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>`,
+  ),
+  checkCircle: svg(
+    `<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>`,
+  ),
+  settings: svg(
+    `<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>`,
+  ),
+  plus: svg(`<path d="M12 5v14"/><path d="M5 12h14"/></svg>Start Download</button>
+          <button id="pending-queue" class="btn btn-secondary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>Add to Queue</button>
+          <button id="pending-cancel" class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>
+        </div>
+      </div>
+
+      <div class="modal" id="add-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-head">
+          <h2 id="modal-title">Add download</h2>
+          <button id="modal-close" class="btn btn-text" type="button" aria-label="Close">Close</button>
+        </div>
+
+        <div class="modal-section">
+          <label for="add-url">URL</label>
+          <div class="modal-row">
+            <input id="add-url" type="url" placeholder="https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso" />
+            <input id="add-connections" type="number" min="1" max="32" step="1" value="8" aria-label="Connections" title="Connections" />
+            <button id="add-download" class="btn btn-primary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Add</button>
+          </div>
+          <p id="add-error" class="error-note" hidden></p>
+        </div>
+
+        <div class="modal-section">
+          <label for="batch-urls">Batch: one URL per line</label>
+          <textarea id="batch-urls" rows="4" placeholder="https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso&#10;https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.8.0-amd64-netinst.iso"></textarea>
+          <div class="modal-row">
+            <button id="add-batch" class="btn btn-secondary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>Add all</button>
+            <span id="batch-note" class="saved-note" hidden></span>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <label for="grab-url">Site Grabber: page URL</label>
+          <div class="modal-row">
+            <input id="grab-url" type="url" placeholder="https://releases.ubuntu.com/24.04/" />
+            <button id="grab-links" class="btn btn-secondary" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>Grab</button>
+          </div>
+          <p id="grab-error" class="error-note" hidden></p>
+          <ul id="grab-results" class="grab-results"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- preview script below -->
+    <script>
+      // Same rendering as src/main.ts (same classes), sample data only.
+      function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
+      function fmtBytes(n) {
+        if (!Number.isFinite(n) || n < 0) return "0 B";
+        const units = ["B", "KB", "MB", "GB", "TB"]; let v = n, u = 0;
+        while (v >= 1024 && u < units.length - 1) { v /= 1024; u++; }
+        return u === 0 ? `${Math.round(v)} B` : `${v.toFixed(1)} ${units[u]}`;
+      }
+      function fmtSpeed(bps) {
+        if (!Number.isFinite(bps) || bps <= 0) return "0 KB/s";
+        if (bps < 1024) return `${Math.round(bps)} B/s`;
+        if (bps < 1024 * 1024) return `${(bps / 1024).toFixed(1)} KB/s`;
+        return `${(bps / (1024 * 1024)).toFixed(1)} MB/s`;
+      }
+      function splitUnit(s) { const i = s.lastIndexOf(" "); return i > 0 ? [s.slice(0, i), s.slice(i + 1)] : [s, ""]; }
+      function fmtEta(secs) {
+        if (secs === null || !Number.isFinite(secs) || secs < 0) return "-";
+        const s = Math.round(secs), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), r = s % 60;
+        const pad = (n) => String(n).padStart(2, "0");
+        return h > 0 ? `${pad(h)}:${pad(m)}:${pad(r)}` : `${pad(m)}:${pad(r)}`;
+      }
+      function buildSegments(total, downloaded, nseg) {
+        const segs = []; let start = 0, remaining = downloaded;
+        for (let i = 0; i < nseg; i++) {
+          const end = i === nseg - 1 ? total : start + Math.floor(total / nseg);
+          const take = Math.max(0, Math.min(end - start, remaining));
+          segs.push({ start, end, pos: start + take, done: take === end - start, assigned: take > 0 });
+          remaining -= take; start = end;
+        }
+        return segs;
+      }
+      function segmentStrip(d) {
+        if (!d.segments || d.segments.length === 0) return "";
+        const blocks = d.segments.slice(0, 32).map((s) => {
+          let cls = "";
+          if (s.done) cls = "is-done";
+          else if (d.status === "failed") cls = "is-failed";
+          else if (s.assigned) cls = "is-active";
+          return `<span class="seg ${cls}"></span>`;
+        });
+        return `<div class="dl-segments" aria-hidden="true">${blocks.join("")}</div>`;
+      }
+      function rowActions(d) {
+        const btns = [];
+        if (d.status === "downloading") btns.push(`<button class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5v14"/><path d="M15 5v14"/></svg>Pause</button>`);
+        if (d.status === "paused") btns.push(`<button class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m7 4.5 13 7.5-13 7.5z"/></svg>Resume</button>`);
+        if (["downloading", "paused", "queued"].includes(d.status)) btns.push(`<button class="btn btn-text" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>`);
+        if (["completed", "failed", "cancelled"].includes(d.status)) btns.push(`<button class="btn btn-text btn-danger" type="button"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Delete</button>`);
+        return btns.join("");
+      }
+      function shortUrl(url) { const bare = url.replace(/^https?:\/\//, ""); return bare.length > 44 ? `${bare.slice(0, 42)}…` : bare; }
+      function statusLabel(s) { return { queued: "Queued", downloading: "Downloading", paused: "Paused", completed: "Completed", failed: "Failed", cancelled: "Cancelled" }[s]; }
+      function downloadRow(d) {
+        const pct = d.total && d.total > 0 ? Math.min(1, Math.max(0, d.downloaded / d.total)) : 0;
+        const [dlNum, dlUnit] = splitUnit(fmtBytes(d.downloaded));
+        const size = d.total
+          ? `${dlNum} <span class="unit">${dlUnit}</span><span class="dl-sub">of ${fmtBytes(d.total)} · ${Math.round(pct * 100)}%</span>`
+          : `${dlNum} <span class="unit">${dlUnit}</span>`;
+        const [spNum, spUnit] = d.status === "downloading" ? splitUnit(fmtSpeed(d.speed_bps)) : ["-", ""];
+        const speed = d.status === "downloading" ? `${spNum} <span class="unit">${spUnit}</span>` : "-";
+        const eta = d.status === "downloading" ? fmtEta(d.eta_secs) : "-";
+        const error = d.error ? `<div class="dl-error">${esc(d.error)}</div>` : "";
+        const phoneAction = (rowActions(d).match(/<button[^>]*>.*?<\/button>/) || [""])[0];
+        return `
+        <div class="dl-row" data-id="${esc(d.id)}">
+          <div class="dl-identity">
+            <div class="dl-filename">${esc(d.filename || d.url)}</div>
+            <div class="dl-url" title="${esc(d.url)}">${esc(shortUrl(d.url))}</div>
+            ${segmentStrip(d)}
+            <div class="dl-progress"><div class="dl-progress-fill" style="width: ${(pct * 100).toFixed(1)}%"></div></div>
+            ${phoneAction ? `<span class="dl-phone-action">${phoneAction}</span>` : ""}
+            ${error}
+          </div>
+          <div class="dl-num dl-col-size">${size}</div>
+          <div class="dl-num dl-col-speed">${speed}</div>
+          <div class="dl-num dl-col-eta">${eta}</div>
+          <div class="dl-status"><span class="pill pill-${d.status}">${statusLabel(d.status)}</span></div>
+          <div class="dl-actions dl-col-actions">${rowActions(d)}</div>
+        </div>`;
+      }
+      function tableHead() {
+        return `<div class="dl-table-head"><div>File</div><div class="num">Size</div><div class="num dl-col-speed">Speed</div><div class="num dl-col-eta">ETA</div><div class="num">Status</div><div></div></div>`;
+      }
+      function kpiValue(id, text) {
+        const [num, unit] = splitUnit(text);
+        document.getElementById(id).innerHTML = unit ? `${esc(num)} <span class="kpi-unit">${esc(unit)}</span>` : esc(num);
+      }
+      const D = (id, filename, url, total, downloaded, status, speed, eta, error, category, created) => ({
+        id, filename, url, total, downloaded, status, speed_bps: speed, eta_secs: eta, error: error || null,
+        category: category || "General", created,
+        segments: buildSegments(total, downloaded, 8),
+      });
+      // Sample history: completed rows span categories and dates so the
+      // History filters have something real to show. Today is Monday
+      // 2026-11-09, so Today and This week both hold the two files from
+      // today; All holds six.
+      const H = 3600e3, DAY = 86400e3, T0 = Date.now();
+      const downloads = [
+        D("d1", "ubuntu-24.04.1-desktop-amd64.iso", "https://releases.ubuntu.com/24.04/ubuntu-24.04.1-desktop-amd64.iso", 6117356032, 3812345678, "downloading", 12582912, 183, null, "Programs", T0 - 2 * H),
+        D("d2", "debian-12.8.0-amd64-netinst.iso", "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.8.0-amd64-netinst.iso", 661651456, 601234567, "downloading", 8601234, 7, null, "Programs", T0 - 1 * H),
+        D("d3", "node-v22.11.0-linux-x64.tar.xz", "https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz", 25234567, 12345678, "paused", 0, null, null, "Programs", T0 - 26 * H),
+        D("d4", "firefox-133.0.tar.bz2", "https://download.mozilla.org/?product=firefox-133.0&os=linux64", 76543210, 76543210, "completed", 0, null, null, "Programs", T0 - 3 * H),
+        D("d5", "go1.23.3.linux-amd64.tar.gz", "https://go.dev/dl/go1.23.3.linux-amd64.tar.gz", 71234567, 45678901, "failed", 0, null, "Connection reset by peer", "Programs", T0 - 5 * H),
+        D("d6", "blender-4.3.0-linux-x64.tar.xz", "https://download.blender.org/release/Blender4.3/blender-4.3.0-linux-x64.tar.xz", 271234567, 0, "queued", 0, null, null, "Programs", T0 - 30 * 60e3),
+        D("d7", "report.pdf", "https://arxiv.org/pdf/2106.09685.pdf", 2457600, 2457600, "completed", 0, null, null, "Documents", T0 - 3 * H),
+        D("d8", "song.flac", "https://filesamples.com/samples/audio/flac/sample1.flac", 32123456, 32123456, "completed", 0, null, null, "Music", T0 - 26 * H),
+        D("d9", "movie.mkv", "https://test-videos.co.uk/vids/bigbuckbunny/mkv/h264/720/Big_Buck_Bunny_720_10s_1MB.mkv", 1500000000, 1500000000, "completed", 0, null, null, "Video", T0 - 4 * DAY),
+        D("d10", "archive.tar.gz", "https://ftp.gnu.org/gnu/hello/hello-2.12.tar.gz", 123456789, 123456789, "completed", 0, null, null, "Compressed", T0 - 10 * DAY),
+        D("d11", "photo.webp", "https://www.gstatic.com/webp/gallery/1.webp", 3456789, 3456789, "completed", 0, null, null, "Pictures", T0 - 2 * DAY),
+      ];
+      for (const d of downloads) {
+        const sum = d.segments.reduce((a, s) => a + (s.pos - s.start), 0);
+        console.assert(sum === d.downloaded, d.filename, sum, d.downloaded);
+      }
+      const params = new URLSearchParams(location.search);
+      const view = "settings";
+      const modal = params.get("modal") || "";
+      const TITLES = { downloads: "Downloads", completed: "Completed", settings: "Settings" };
+      document.getElementById("view-title").textContent = TITLES[view] || "Downloads";
+      document.getElementById("add-url-btn").hidden = view !== "downloads";
+      document.getElementById("download-list").innerHTML = tableHead() + downloads.map(downloadRow).join("");
+      document.getElementById("count").textContent = downloads.length + " downloads";
+      const completed = downloads.filter((d) => d.status === "completed");
+      document.getElementById("completed-list").innerHTML = tableHead() + completed.map(downloadRow).join("");
+      document.getElementById("completed-count").textContent = completed.length + " completed";
+      const cats = [...new Set(completed.map((d) => d.category))].sort();
+      document.getElementById("history-category").innerHTML = `<option value="all">All categories</option>` + cats.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+      // Speed graph preview: same geometry as src/main.ts renderSpeedChart,
+      // deterministic 5-minute series (61 points, one per 5 s). Now equals
+      // the KPI total speed (20.2 MB/s); peak is the single 21.5 spike.
+      (function renderSpeedPreview() {
+        const host = document.getElementById("speed-chart");
+        const width = host.clientWidth || 640, height = 140;
+        const padL = 28, padR = 8, padT = 6, padB = 20;
+        const plotW = width - padL - padR, plotH = height - padT - padB;
+        const now = Date.now(), windowStart = now - 5 * 60 * 1000;
+        const series = [];
+        for (let i = 0; i <= 60; i++) {
+          const t = now - (60 - i) * 5000;
+          let mb;
+          if (i <= 20) mb = 2 + (10 * i) / 20;
+          else if (i <= 40) mb = 12 + (6 * (i - 20)) / 20 + (i % 2 === 0 ? 0.6 : -0.6);
+          else if (i <= 48) mb = 18 + (2.2 * (i - 40)) / 8;
+          else if (i === 49) mb = 21.5;
+          else mb = 20.2;
+          series.push({ t, v: Math.round(mb * 1024 * 1024) });
+        }
+        const maxV = Math.max(...series.map((s) => s.v));
+        const divisor = 1024 * 1024, unit = "MB/s";
+        const maxUnit = maxV / divisor;
+        const niceStep = (raw) => {
+          const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+          const n = raw / pow;
+          return n <= 1 ? pow : n <= 2 ? 2 * pow : n <= 5 ? 5 * pow : 10 * pow;
+        };
+        const step = niceStep(maxUnit / 5);
+        const top = Math.ceil(maxUnit / step) * step;
+        const fmtTick = (v) => Number.isInteger(v) ? String(v) : v.toFixed(1);
+        const y = (v) => padT + plotH - (v / top) * plotH;
+        const x = (t) => padL + ((t - windowStart) / (5 * 60 * 1000)) * plotW;
+        const parts = [];
+        for (let v = 0; v <= top + 1e-9; v += step) {
+          if (v !== 0) parts.push(`<line x1="${padL}" x2="${padL + plotW}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="#2b2b2b" stroke-width="1"/>`);
+          parts.push(`<text x="${padL - 8}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${fmtTick(v)}</text>`);
+        }
+        parts.push(`<line x1="${padL}" x2="${padL + plotW}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}" stroke="#444444" stroke-width="2"/>`);
+        for (let i = 0; i <= 5; i++) {
+          const t = windowStart + i * 60_000;
+          const label = i === 5 ? "now" : `-${5 - i}m`;
+          const anchor = i === 0 ? "start" : i === 5 ? "end" : "middle";
+          const lx = i === 0 ? padL : i === 5 ? padL + plotW : x(t);
+          parts.push(`<text x="${lx.toFixed(1)}" y="${height - 6}" text-anchor="${anchor}">${label}</text>`);
+        }
+        const pts = series.map((s) => `${x(s.t).toFixed(1)},${y(s.v / divisor).toFixed(1)}`).join(" ");
+        parts.push(`<polyline points="${pts}" fill="none" stroke="#c6f24e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`);
+        host.innerHTML = `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="Total download speed over the last 5 minutes">${parts.join("")}</svg>`;
+        document.getElementById("speed-unit").textContent = unit;
+        kpiValue("speed-now", fmtSpeed(12582912 + 8601234));
+        kpiValue("speed-peak", fmtSpeed(maxV));
+        const avgV = series.reduce((a, s) => a + s.v, 0) / series.length;
+        kpiValue("speed-average", fmtSpeed(avgV));
+      })();
+      document.getElementById("kpi-active").textContent = "2";
+      kpiValue("kpi-speed", fmtSpeed(12582912 + 8601234));
+      kpiValue("kpi-today", fmtBytes(4538259956));
+      document.getElementById("kpi-queued").textContent = "1";
+      document.getElementById("usage-active").textContent = "2";
+      kpiValue("usage-today", fmtBytes(4538259956));
+      document.getElementById("usage-completed").textContent = "6";
+      document.getElementById("topbar-status").textContent = "2 active · " + fmtSpeed(12582912 + 8601234);
+      if (view !== "downloads") {
+        document.getElementById("view-downloads").hidden = true;
+        document.getElementById("view-" + view).hidden = false;
+        document.querySelectorAll(".nav-item").forEach((b) => b.classList.toggle("is-active", b.dataset.view === view));
+      }
+      if (modal === "pending") {
+        document.getElementById("pending-filename").value = "ubuntu-24.04.1-desktop-amd64.iso";
+        document.getElementById("pending-url").textContent = "https://releases.ubuntu.com/24.04/ubuntu-24.04.1-desktop-amd64.iso";
+        document.getElementById("pending-size").textContent = "5.7 GB";
+        document.getElementById("pending-dest").value = "/home/zyan/Downloads/ZDM/Programs";
+        document.getElementById("pending-category").value = "Programs";
+        document.getElementById("pending-connections").value = "8";
+        document.getElementById("pending-more").textContent = "1 more pending";
+        document.getElementById("pending-more").hidden = false;
+        document.getElementById("modal-root").hidden = false;
+        document.getElementById("add-modal").hidden = true;
+        document.getElementById("pending-modal").hidden = false;
+      } else if (modal === "add") {
+        document.getElementById("modal-root").hidden = false;
+        document.getElementById("pending-modal").hidden = true;
+        document.getElementById("add-modal").hidden = false;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1367 @@
+{
+ "url": ".taste-skill/preview-completed.html",
+ "at": "2026-11-09T14:39:45.380Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 1,
+   "filled": [
+    0.44
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 2,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 900,
+     "screens": 1,
+     "words": 178,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 77,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 1.3,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 88,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Completed",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.62,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.38,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      14,
+      16,
+      19
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 19.2,
+      "vw": 1.3,
+      "font": "Host Grotesk",
+      "text": "ZDM"
+     },
+     "monoShare": 0.62,
+     "monoProseShare": 0.62,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "2 active · 20.2 MB/s",
+      "6 completed",
+      "2 downloads",
+      "download.mozilla.org/?product=firefox-13",
+      "73.0",
+      "MB"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.11,
+     "smallText": 14
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.53
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.19
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.04
+      }
+     ],
+     "button": null,
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 18,
+     "inHero": 9,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Delete",
+      "Verify",
+      "Scan",
+      "Delete",
+      "Scan"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "aside#sidebar 224px",
+      "header#topbar 1216px",
+      "div.nav-divider 175px rule",
+      "span.tl-rule 993px rule",
+      "span.tl-rule 973px rule"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 900,
+    "margins": {
+     "left": 0,
+     "right": 45
+    },
+    "sections": [
+     {
+      "sel": "div#tl-c-2026-11-09.tl-group",
+      "tag": "div",
+      "top": 260,
+      "height": 256,
+      "words": 35,
+      "media": 0,
+      "middle": 174,
+      "heading": null,
+      "left": 272,
+      "right": 45,
+      "textLeft": 272,
+      "textRight": 58,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-08.tl-group",
+      "tag": "div",
+      "top": 536,
+      "height": 140,
+      "words": 18,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 272,
+      "right": 45,
+      "textLeft": 272,
+      "textRight": 58,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-07.tl-group",
+      "tag": "div",
+      "top": 696,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 272,
+      "right": 45,
+      "textLeft": 272,
+      "textRight": 58,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-05.tl-group",
+      "tag": "div",
+      "top": 856,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 272,
+      "right": 45,
+      "textLeft": 272,
+      "textRight": 58,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-10-30.tl-group",
+      "tag": "div",
+      "top": 1016,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 272,
+      "right": 45,
+      "textLeft": 272,
+      "textRight": 58,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Completed",
+      "size": 19,
+      "top": 88,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 248,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.12,
+    "voidBox": {
+     "x": 0,
+     "y": 180,
+     "w": 240,
+     "h": 660
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": {
+     "w": 224,
+     "tag": "aside",
+     "links": 3,
+     "share": 0.16
+    },
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 24,
+     "right": 45
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 1.3,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 88,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 6,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       10,
+       6
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.41,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Completed",
+     "size": 19,
+     "top": 88
+    },
+    "colourShare": 0.007
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.64,
+    0.79
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1358,
+     "screens": 1.3,
+     "words": 149,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 77,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 2.5,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 72,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Completed",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.65,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.35,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      14,
+      16,
+      19
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 19.2,
+      "vw": 2.5,
+      "font": "Host Grotesk",
+      "text": "Completed"
+     },
+     "monoShare": 0.65,
+     "monoProseShare": 0.65,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "6 completed",
+      "2 downloads",
+      "download.mozilla.org/?product=firefox-13",
+      "73.0",
+      "MB",
+      "of 73.0 MB · 100%"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.09,
+     "smallText": 13
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.57
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.15
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.04
+      }
+     ],
+     "button": null,
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 0,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 6,
+     "hairlineSamples": [
+      "header#topbar 768px",
+      "span.tl-rule 561px rule",
+      "span.tl-rule 541px rule",
+      "span.tl-rule 540px rule",
+      "span.tl-rule 536px rule"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1358,
+    "margins": {
+     "left": 16,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "div#tl-c-2026-11-09.tl-group",
+      "tag": "div",
+      "top": 244,
+      "height": 296,
+      "words": 32,
+      "media": 0,
+      "middle": 180,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-08.tl-group",
+      "tag": "div",
+      "top": 560,
+      "height": 160,
+      "words": 17,
+      "media": 0,
+      "middle": 188,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-07.tl-group",
+      "tag": "div",
+      "top": 740,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 241,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-05.tl-group",
+      "tag": "div",
+      "top": 920,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 180,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-10-30.tl-group",
+      "tag": "div",
+      "top": 1100,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 211,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Completed",
+      "size": 19,
+      "top": 72,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 16,
+     "right": 32
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 2.5,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 72,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 6,
+     "firstScreen": 5,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       10,
+       6
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.4,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Completed",
+     "size": 19,
+     "top": 72
+    },
+    "colourShare": 0.038
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.56,
+    0.68
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 1434,
+     "screens": 1.7,
+     "words": 149,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 77,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 4.9,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 72,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Completed",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.65,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.35,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      14,
+      16,
+      19
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 19.2,
+      "vw": 4.9,
+      "font": "Host Grotesk",
+      "text": "Completed"
+     },
+     "monoShare": 0.65,
+     "monoProseShare": 0.65,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "6 completed",
+      "2 downloads",
+      "download.mozilla.org/?product=firefox-13",
+      "73.0",
+      "MB",
+      "of 73.0 MB · 100%"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.09,
+     "smallText": 13
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.57
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.15
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.04
+      }
+     ],
+     "button": null,
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 5,
+     "inHero": 0,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "header#topbar 390px",
+      "span.tl-rule 183px rule",
+      "span.tl-rule 163px rule",
+      "span.tl-rule 162px rule"
+     ],
+     "outlinedBoxes": 6,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 1434,
+    "margins": {
+     "left": 16,
+     "right": 31
+    },
+    "sections": [
+     {
+      "sel": "div#tl-c-2026-11-09.tl-group",
+      "tag": "div",
+      "top": 320,
+      "height": 296,
+      "words": 32,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 31,
+      "textLeft": 33,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-08.tl-group",
+      "tag": "div",
+      "top": 636,
+      "height": 160,
+      "words": 17,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 31,
+      "textLeft": 33,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-07.tl-group",
+      "tag": "div",
+      "top": 816,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-11-05.tl-group",
+      "tag": "div",
+      "top": 996,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 31,
+      "textLeft": 33,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-c-2026-10-30.tl-group",
+      "tag": "div",
+      "top": 1176,
+      "height": 160,
+      "words": 20,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Completed",
+      "size": 19,
+      "top": 72,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [
+     {
+      "text": "7 Nov",
+      "side": "right",
+      "px": 10
+     }
+    ],
+    "edges": [
+     {
+      "x": 16,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 16,
+     "right": -132
+    },
+    "hero": {
+     "text": "Completed",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 4.9,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 72,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 6,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       10,
+       6
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.4,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Completed",
+     "size": 19,
+     "top": 72
+    },
+    "colourShare": 0.009
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 390,
+   "message": "1 text block(s) sit within 12px of the screen edge: \"7 Nov\" (10px from the right)",
+   "fix": "Keep text inside the page margin (16–20px). Only display type deliberately bled past the edge may touch it."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/desktop-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/tablet-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/mobile-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

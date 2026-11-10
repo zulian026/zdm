@@ -1,0 +1,1609 @@
+{
+ "url": ".taste-skill/preview.html",
+ "at": "2026-11-10T05:13:53.179Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 1,
+   "filled": [
+    0.76
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 900,
+     "screens": 1,
+     "words": 359,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 80,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 1.3,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 92,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Downloads",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.55,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.45,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Host Grotesk",
+      "size": 12,
+      "leading": 1.67,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 6.9
+     },
+     "measureChars": 156,
+     "max": {
+      "size": 23,
+      "vw": 1.6,
+      "font": "Atkinson Hyperlegible Mono",
+      "text": "28.2"
+     },
+     "monoShare": 0.55,
+     "monoProseShare": 0.55,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "2 active · 28.2 MB/s",
+      "0.2.0",
+      "28.2",
+      "MB/s",
+      "21.5",
+      "MB/s"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.13,
+     "smallText": 39
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0d1013",
+       "top": 505,
+       "hsl": {
+        "h": 210,
+        "s": 0.19,
+        "l": 0.06
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.48
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.17
+      },
+      {
+       "color": "#f66d67",
+       "share": 0.05
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#eceff2",
+      "hsl": {
+       "h": 210,
+       "s": 0.19,
+       "l": 0.94
+      },
+      "fg": "#06080b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 45,
+     "inHero": 18,
+     "radius": 6,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Compressed",
+      "Documents",
+      "Music",
+      "Pictures",
+      "Programs"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 10,
+     "hairlineSamples": [
+      "aside#sidebar 224px",
+      "header#topbar 1216px",
+      "div.today-grid 337px",
+      "div.today-queue 337px",
+      "div.nav-divider 175px rule"
+     ],
+     "outlinedBoxes": 16,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 16,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 7,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 646
+      },
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 1506
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 900,
+    "margins": {
+     "left": 48,
+     "right": 54
+    },
+    "sections": [
+     {
+      "sel": "div#tl-d-2026-11-10.tl-group",
+      "tag": "div",
+      "top": 610,
+      "height": 840,
+      "words": 111,
+      "media": 0,
+      "middle": 51,
+      "heading": null,
+      "left": 293,
+      "right": 66,
+      "textLeft": 293,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-d-2026-11-09.tl-group",
+      "tag": "div",
+      "top": 1470,
+      "height": 388,
+      "words": 47,
+      "media": 0,
+      "middle": 143,
+      "heading": null,
+      "left": 293,
+      "right": 66,
+      "textLeft": 293,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-d-2026-11-08.tl-group",
+      "tag": "div",
+      "top": 1878,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 293,
+      "right": 66,
+      "textLeft": 293,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-d-2026-11-06.tl-group",
+      "tag": "div",
+      "top": 2038,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 293,
+      "right": 66,
+      "textLeft": 293,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div#tl-d-2026-10-31.tl-group",
+      "tag": "div",
+      "top": 2198,
+      "height": 140,
+      "words": 21,
+      "media": 0,
+      "middle": 272,
+      "heading": null,
+      "left": 293,
+      "right": 66,
+      "textLeft": 293,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Downloads",
+      "size": 19,
+      "top": 92,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 248,
+      "n": 1
+     },
+     {
+      "x": 269,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.12,
+    "voidBox": {
+     "x": 0,
+     "y": 180,
+     "w": 240,
+     "h": 660
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": {
+     "w": 224,
+     "tag": "aside",
+     "links": 3,
+     "share": 0.16
+    },
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 45,
+     "right": 54
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 1.3,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 92,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 2,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 17,
+     "radii": [
+      [
+       10,
+       16
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0.42,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Downloads",
+     "size": 19,
+     "top": 92
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.73,
+    0.96,
+    0.96,
+    0.96
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3355,
+     "screens": 3.3,
+     "words": 307,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 80,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 2.5,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Downloads",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.55,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.45,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Host Grotesk",
+      "size": 12,
+      "leading": 1.67,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 6.9
+     },
+     "measureChars": 117,
+     "max": {
+      "size": 23,
+      "vw": 3,
+      "font": "Atkinson Hyperlegible Mono",
+      "text": "28.2"
+     },
+     "monoShare": 0.55,
+     "monoProseShare": 0.55,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "0.2.0",
+      "28.2",
+      "MB/s",
+      "21.5",
+      "MB/s",
+      "13.9"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.12,
+     "smallText": 38
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0d1013",
+       "top": 317,
+       "hsl": {
+        "h": 210,
+        "s": 0.19,
+        "l": 0.06
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.5
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.15
+      },
+      {
+       "color": "#f66d67",
+       "share": 0.06
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#eceff2",
+      "hsl": {
+       "h": 210,
+       "s": 0.19,
+       "l": 0.94
+      },
+      "fg": "#06080b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 19,
+     "inHero": 9,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Compressed",
+      "Documents",
+      "Music",
+      "Pictures",
+      "Programs"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "header#topbar 768px",
+      "div.today-grid 694px",
+      "div.today-queue 694px",
+      "span.tl-rule 519px rule",
+      "span.tl-rule 492px rule"
+     ],
+     "outlinedBoxes": 17,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "svg",
+      "ratio": 0.16
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3355,
+    "margins": {
+     "left": 33,
+     "right": 46
+    },
+    "sections": [
+     {
+      "sel": "div#update-banner.update-banner",
+      "tag": "div",
+      "top": 180,
+      "height": 121,
+      "words": 19,
+      "media": 0,
+      "middle": 134,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 46,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.bento-speed",
+      "tag": "div",
+      "top": 317,
+      "height": 478,
+      "words": 21,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "28.2",
+       "size": 23,
+       "tag": "span"
+      },
+      "left": 37,
+      "right": 37,
+      "textLeft": 37,
+      "textRight": 37,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.bento-today",
+      "tag": "div",
+      "top": 811,
+      "height": 260,
+      "words": 11,
+      "media": 0,
+      "middle": 231,
+      "heading": {
+       "text": "4.3",
+       "size": 23,
+       "tag": "span"
+      },
+      "left": 37,
+      "right": 324,
+      "textLeft": 37,
+      "textRight": 324,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.bento-queue",
+      "tag": "div",
+      "top": 1087,
+      "height": 2252,
+      "words": 223,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 37,
+      "right": 53,
+      "textLeft": 37,
+      "textRight": 53,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Downloads",
+      "size": 19,
+      "top": 76,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 1
+     },
+     {
+      "x": 37,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 33,
+     "right": 46
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 2.5,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 2,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 18,
+     "radii": [
+      [
+       10,
+       17
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0.42,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Downloads",
+     "size": 19,
+     "top": 76
+    },
+    "colourShare": 0.004
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    0.76,
+    0.86,
+    0.92,
+    0.92,
+    0.92
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 3543,
+     "screens": 4.2,
+     "words": 307,
+     "img": 1,
+     "video": 0,
+     "canvas": 0,
+     "svg": 80,
+     "sections": 3,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 4.9,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Downloads",
+     "words": 1,
+     "lines": 1,
+     "size": 19.2,
+     "font": "Host Grotesk"
+    },
+    "headings": [
+     {
+      "text": "28.2 MB/s",
+      "words": 2,
+      "chars": 9,
+      "lines": 1,
+      "size": 23,
+      "vw": 5.9,
+      "font": "Atkinson Hyperlegible Mono",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.39,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.81,
+      "top": 614,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "4.3 GB",
+      "words": 2,
+      "chars": 6,
+      "lines": 1,
+      "size": 23,
+      "vw": 5.9,
+      "font": "Atkinson Hyperlegible Mono",
+      "weight": 500,
+      "tracking": 0,
+      "leading": 1.39,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.81,
+      "top": 872,
+      "tag": "span",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Atkinson Hyperlegible Mono",
+       "share": 0.55,
+       "mono": true
+      },
+      {
+       "family": "Host Grotesk",
+       "share": 0.45,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "Host Grotesk",
+      "size": 12,
+      "leading": 1.67,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 6.9
+     },
+     "measureChars": 54,
+     "max": {
+      "size": 23,
+      "vw": 5.9,
+      "font": "Atkinson Hyperlegible Mono",
+      "text": "28.2"
+     },
+     "monoShare": 0.55,
+     "monoProseShare": 0.55,
+     "monoFamilies": [
+      "Atkinson Hyperlegible Mono"
+     ],
+     "monoSamples": [
+      "0.2.0",
+      "28.2",
+      "MB/s",
+      "21.5",
+      "MB/s",
+      "13.9"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.12,
+     "smallText": 38
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#06080b",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.29,
+      "l": 0.03
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0d1013",
+       "top": 337,
+       "hsl": {
+        "h": 210,
+        "s": 0.19,
+        "l": 0.06
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#9da2a8",
+       "share": 0.5
+      },
+      {
+       "color": "#eceff2",
+       "share": 0.24
+      },
+      {
+       "color": "#c3c8cc",
+       "share": 0.15
+      },
+      {
+       "color": "#f66d67",
+       "share": 0.06
+      },
+      {
+       "color": "#c6f24e",
+       "share": 0.05
+      }
+     ],
+     "button": {
+      "bg": "#eceff2",
+      "hsl": {
+       "h": 210,
+       "s": 0.19,
+       "l": 0.94
+      },
+      "fg": "#06080b"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 19,
+     "inHero": 9,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Compressed",
+      "Documents",
+      "Music",
+      "Pictures",
+      "Programs"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "header#topbar 390px",
+      "div.today-grid 316px",
+      "div.today-queue 316px"
+     ],
+     "outlinedBoxes": 17,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 7,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 1384
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 2436
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "svg",
+      "ratio": 0.17
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "host grotesk",
+     "atkinson hyperlegible mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 3543,
+    "margins": {
+     "left": 33,
+     "right": 10
+    },
+    "sections": [
+     {
+      "sel": "div#update-banner.update-banner",
+      "tag": "div",
+      "top": 180,
+      "height": 141,
+      "words": 19,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.bento-speed",
+      "tag": "div",
+      "top": 337,
+      "height": 478,
+      "words": 21,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "28.2",
+       "size": 23,
+       "tag": "span"
+      },
+      "left": 37,
+      "right": 37,
+      "textLeft": 37,
+      "textRight": 37,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.bento-today",
+      "tag": "div",
+      "top": 831,
+      "height": 260,
+      "words": 11,
+      "media": 0,
+      "middle": 42,
+      "heading": {
+       "text": "4.3",
+       "size": 23,
+       "tag": "span"
+      },
+      "left": 37,
+      "right": 135,
+      "textLeft": 37,
+      "textRight": 135,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.toolbar",
+      "tag": "div",
+      "top": 1128,
+      "height": 172,
+      "words": 10,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 37,
+      "right": 66,
+      "textLeft": 37,
+      "textRight": 83,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div#download-list",
+      "tag": "div",
+      "top": 1312,
+      "height": 2132,
+      "words": 202,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 53,
+      "right": 10,
+      "textLeft": 53,
+      "textRight": 10,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Downloads",
+      "size": 19,
+      "top": 76,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [
+     {
+      "text": "releases.ubuntu.com/24.04/ubuntu-24.04.1-d…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "cdimage.debian.org/debian-cd/current/amd64…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "download.mozilla.org/?product=firefox-133.…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "download.blender.org/release/Blender4.3/bl…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "nodejs.org/dist/v22.11.0/node-v22.11.0-lin…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "filesamples.com/samples/audio/flac/sample1…",
+      "side": "right",
+      "px": 10
+     },
+     {
+      "text": "test-videos.co.uk/vids/bigbuckbunny/mkv/h2…",
+      "side": "right",
+      "px": 10
+     }
+    ],
+    "edges": [
+     {
+      "x": 16,
+      "n": 1
+     },
+     {
+      "x": 37,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 2,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#06080b",
+    "sidebar": null,
+    "topbar": {
+     "h": 56
+    },
+    "canvas": {
+     "left": 33,
+     "right": -188
+    },
+    "hero": {
+     "text": "Downloads",
+     "words": 1,
+     "chars": 9,
+     "lines": 1,
+     "size": 19,
+     "vw": 4.9,
+     "font": "Host Grotesk",
+     "weight": 500,
+     "tracking": -0.03,
+     "leading": 1.46,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 2,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 18,
+     "radii": [
+      [
+       10,
+       17
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0.42,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      12,
+      13,
+      14,
+      16,
+      19,
+      23
+     ]
+    },
+    "title": {
+     "text": "Downloads",
+     "size": 19,
+     "top": 76
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 390,
+   "message": "7 text block(s) sit within 12px of the screen edge: \"releases.ubuntu.com/24.04/ubun\" (10px from the right); \"cdimage.debian.org/debian-cd/c\" (10px from the right); \"download.mozilla.org/?product=\" (10px from the right); \"download.blender.org/release/B\" (10px from the right)",
+   "fix": "Keep text inside the page margin (16–20px). Only display type deliberately bled past the edge may touch it."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/desktop-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/tablet-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/mobile-fold.jpg",
+   "pages": [
+    "/home/hatch/workspace/zdm-tauri/.taste-skill/inspect/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}
