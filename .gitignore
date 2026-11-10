@@ -11,3 +11,6 @@ __pycache__/
 
 # OS / editor
 .DS_Store
+
+# Built extension packages (rebuild with browser/package-xpi.sh)
+browser/firefox/*.xpi

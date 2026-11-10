@@ -16,7 +16,8 @@ a bad message: errors are logged to ~/Downloads/ZDM/native-host.log
 and answered with {"ok": false, "error": ...}.
 
 Install: run browser/install.sh on the target machine. It registers
-this script as the "com.zdm.native" host for Chromium and Firefox.
+this script as the "com.zdm.native" host for Chromium-family
+browsers and Firefox.
 """
 from __future__ import annotations
 
@@ -33,9 +34,12 @@ QUEUE_FILE = os.path.join(DOWNLOAD_DIR, "queue.json")
 LOCK_FILE = os.path.join(DOWNLOAD_DIR, ".queue.lock")
 LOG_FILE = os.path.join(DOWNLOAD_DIR, "native-host.log")
 
-# Binary next to this install: <project>/browser/zdm-native-host.py
-# -> <project>/release/zdm (standalone binary, runs without the
-# AppImage's GStreamer appsink warning). Falls back to the AppImage.
+# Launch order (first existing + executable wins):
+#   1. /usr/bin/zdm — system install from the .deb package
+#   2. <project>/release/zdm — standalone binary next to this install
+#      (runs without the AppImage's GStreamer appsink warning)
+#   3. <project>/release/ZDM_0.1.1_amd64.AppImage
+ZDIM_SYSTEM = "/usr/bin/zdm"
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ZDIM_BINARY = os.path.join(PROJECT_DIR, "release", "zdm")
 ZDIM_APPIMAGE = os.path.join(PROJECT_DIR, "release", "ZDM_0.1.1_amd64.AppImage")
@@ -141,6 +145,7 @@ def _zdm_running() -> bool:
                     args = f.read().split(b"\0")
                 if args and (
                     args[0].endswith(b"/release/zdm")
+                    or args[0].endswith(b"/usr/bin/zdm")
                     or b"ZDM_0.1.1_amd64.AppImage" in args[0]
                 ):
                     return True
@@ -155,12 +160,17 @@ def _launch_zdm() -> str | None:
     """Start the Tauri app detached (inherits the browser's DISPLAY).
     Returns the launched path, or None when nothing could be started."""
     target = None
-    if os.path.isfile(ZDIM_BINARY) and os.access(ZDIM_BINARY, os.X_OK):
+    if os.path.isfile(ZDIM_SYSTEM) and os.access(ZDIM_SYSTEM, os.X_OK):
+        target = ZDIM_SYSTEM
+    elif os.path.isfile(ZDIM_BINARY) and os.access(ZDIM_BINARY, os.X_OK):
         target = ZDIM_BINARY
     elif os.path.isfile(ZDIM_APPIMAGE) and os.access(ZDIM_APPIMAGE, os.X_OK):
         target = ZDIM_APPIMAGE
     if target is None:
-        log(f"cannot launch ZDM: no binary at {ZDIM_BINARY} nor {ZDIM_APPIMAGE}")
+        log(
+            f"cannot launch ZDM: no binary at {ZDIM_SYSTEM}, {ZDIM_BINARY} "
+            f"nor {ZDIM_APPIMAGE}"
+        )
         return None
     try:
         subprocess.Popen(

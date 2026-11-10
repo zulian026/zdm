@@ -38,7 +38,7 @@ ZDM is a download manager for Linux, built with [Tauri v2](https://v2.tauri.app/
 
 - **Daily schedule** — a recurring queue window (start/stop time, weekdays, default 23:00–06:00 every day, off by default). While ZDM is running, the queue starts when the window opens and pauses — never cancels — when it closes; overnight windows work. A one-shot scheduled start is also available. The schedule only runs while ZDM is running.
 - **Autostart** — "Start ZDM when I log in" (off by default) installs an app-menu entry and an autostart entry that launches ZDM hidden in the tray (`--minimized`), so the daily schedule can fire overnight.
-- **Browser integration** — extensions for Chromium and Firefox intercept downloads automatically: the browser download is cancelled and the URL is handed to ZDM through a native host. With "Ask before downloading" on (the default), intercepted URLs wait in a confirmation popup showing filename, URL, size, folder, category, and connections, instead of auto-starting. The extension also adds a floating "Download with ZDM" button and a context-menu entry on pages with media. See [`browser/README.md`](browser/README.md).
+- **Browser integration** — extensions for Chromium-family browsers (Chromium, Chrome, Edge, Brave, Opera, Vivaldi) and Firefox intercept downloads automatically: the browser download is cancelled and the URL is handed to ZDM through a native host. With "Ask before downloading" on (the default), intercepted URLs wait in a confirmation popup showing filename, URL, size, folder, category, and connections, instead of auto-starting. The extension also adds a floating "Download with ZDM" button and a context-menu entry on pages with media. See [`browser/README.md`](browser/README.md).
 
 ### Updates
 
@@ -72,11 +72,31 @@ Installs `zdm` to `/usr/bin` with an app-menu entry; dependencies are pulled in 
 
 The AppImage may print a harmless WebKitGTK/GStreamer warning on startup; the standalone binary runs without it. On first run ZDM creates `~/.config/zdm/settings.json` and downloads go to `~/Downloads/ZDM/` by default.
 
+## Browser extension
+
+Extensions for Chromium-family browsers (Chromium, Chrome, Edge,
+Brave, Opera, Vivaldi) and Firefox intercept downloads
+automatically: the browser download is cancelled and the URL is
+handed to ZDM through a native host. Run `./browser/install.sh` to
+register the native host, then load the extension once per browser:
+
+| Browser | Load the extension |
+| --- | --- |
+| Chromium, Chrome, Edge, Brave, Opera, Vivaldi | `chrome://extensions` → Developer mode ON → Load unpacked → `browser/chromium` (same pinned extension ID in all six) |
+| Firefox | `about:debugging` → Load Temporary Add-on → `browser/firefox/manifest.json` |
+
+The Firefox add-on is temporary and is lost on browser restart; a
+permanent install needs a signed AMO package. Safari is not
+supported (it needs macOS, Xcode, and an Apple Developer account).
+Full details — all browsers, the native host, the Firefox permanent
+install, and troubleshooting — are in
+[`browser/README.md`](browser/README.md).
+
 ## Usage
 
 - **Add URL** — the Add URL button opens a dialog with the URL, an optional expected SHA-256, a batch field (one URL per line), and the Site Grabber. A download starts immediately; intercepted browser downloads wait for confirmation instead when "Ask before downloading" is on.
 - **Queue** — Start queue / Stop queue in the Downloads toolbar, Pause All in the tray menu. Each row has pause, resume, cancel, and delete; completed rows offer Verify and Scan.
-- **Browser extension** — run `./browser/install.sh` to register the native host, then load the extension once per browser: Chromium → `chrome://extensions` → Load unpacked → `browser/chromium`; Firefox → `about:debugging` → Load Temporary Add-on → `browser/firefox/manifest.json`. The Firefox add-on is temporary and is lost on browser restart; a permanent install needs a signed AMO package.
+- **Browser extension** — see [Browser extension](#browser-extension): run `./browser/install.sh` to register the native host, then load the extension once per browser.
 - **Schedule** — Settings → Daily schedule: enable it, pick start/stop times and weekdays. The next event is shown in Settings and in the Downloads toolbar.
 - **Updates** — Settings → Update manifest URL (pre-filled with the latest release) and "Check for updates". Dismiss hides a version until a newer one appears.
 

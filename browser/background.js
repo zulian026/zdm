@@ -12,7 +12,10 @@
 //    ("com.zdm.native"), which appends it to ~/Downloads/ZDM/queue.json
 //    and launches ZDM if needed. The Tauri app polls that file ~2 s.
 //  - Right-click a link -> "Download with ZDM" sends just that link
-//    (works even when auto-intercept is OFF).
+//    (works even when auto-intercept is OFF). Right-click a video or
+//    audio element -> "Download video/audio with ZDM" sends its
+//    current source. The floating button from content.js reports
+//    through runtime.onMessage below.
 //  - Click the toolbar icon to toggle auto-intercept ON/OFF (badge
 //    shows the state; it is stored in chrome.storage.local).
 //
@@ -89,6 +92,16 @@ ext.runtime.onInstalled.addListener(() => {
     title: "Download with ZDM",
     contexts: ["link"],
   });
+  ext.contextMenus.create({
+    id: "zdm-download-video",
+    title: "Download video with ZDM",
+    contexts: ["video"],
+  });
+  ext.contextMenus.create({
+    id: "zdm-download-audio",
+    title: "Download audio with ZDM",
+    contexts: ["audio"],
+  });
   refreshAction();
 });
 
@@ -114,6 +127,22 @@ ext.downloads.onCreated.addListener(async (item) => {
 ext.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === "zdm-download" && info.linkUrl) {
     sendToZdm(info.linkUrl);
+  }
+  // Right-click a video/audio element -> download its current source.
+  if (
+    (info.menuItemId === "zdm-download-video" ||
+      info.menuItemId === "zdm-download-audio") &&
+    info.srcUrl &&
+    isInterceptable(info.srcUrl)
+  ) {
+    sendToZdm(info.srcUrl);
+  }
+});
+
+// Floating button from content.js (page media grabber).
+ext.runtime.onMessage.addListener((msg) => {
+  if (msg && msg.type === "zdm-download" && isInterceptable(msg.url)) {
+    sendToZdm(msg.url);
   }
 });
 

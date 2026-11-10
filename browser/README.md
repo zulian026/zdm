@@ -1,6 +1,8 @@
 # ZDM Browser Integration (Tauri)
 
-Automatic download interception for Chromium and Firefox, IDM-style:
+Automatic download interception for Chromium-family browsers
+(Chromium, Chrome, Edge, Brave, Opera, Vivaldi) and Firefox,
+IDM-style:
 a download started in the browser is cancelled there and handed to
 ZDM instead. No Windows-style OS hooking exists on Linux — this uses
 the supported route: a browser extension (`downloads` API) + a native
@@ -17,8 +19,10 @@ browser download starts
   -> browser/zdm-native-host.py (Python 3 stdlib, Native Messaging protocol)
   -> appends the URL to ~/Downloads/ZDM/queue.json
      (JSON array of strings — the same format the Python ZDM uses)
-  -> launches ~/workspace/zdm-tauri/release/zdm if not running
-     (standalone binary: no AppImage GStreamer appsink warning)
+  -> launches ZDM if not running: /usr/bin/zdm first (system
+     install from the .deb), then
+     ~/workspace/zdm-tauri/release/zdm (standalone binary: no
+     AppImage GStreamer appsink warning), then the AppImage
   -> Tauri app polls queue.json every ~2 s (queue_loop in
      src-tauri/src/lib.rs), dedupes by URL, and — with "Ask before
      downloading" ON (Settings, default) — holds the URL as PENDING:
@@ -42,6 +46,10 @@ appear in the UI on their own.
 ```
 browser/
   background.js            shared source of truth for the extension
+                           (video/audio context menus + floating
+                           button listener); the per-browser copies
+                           are byte-identical — package-xpi.sh
+                           enforces this for Firefox at build time
   content.js               shared source of truth for the page media
                            grabber (content script, see below)
   chromium/
@@ -60,8 +68,14 @@ browser/
                            zdm@example.local (must match
                            allowed_extensions in the native manifest)
     com.zdm.native.json    template (same placeholder)
+    zdm-firefox-1.2.0.xpi  built by package-xpi.sh (unsigned, for
+                           AMO submission — see below; git-ignored)
+  package-xpi.sh           builds the Firefox .xpi (manifest.json +
+                           background.js + content.js only)
   zdm-native-host.py       native host (stdlib only, executable)
-  install.sh               registers the host for both browsers
+  install.sh               registers the host for every supported
+                           browser (all Chromium-family browsers
+                           with a binary or config dir, plus Firefox)
   README.md                this file
 ```
 
@@ -74,22 +88,36 @@ cd ~/workspace/zdm-tauri
 ./browser/install.sh
 ```
 
-That registers the native host for Chromium
-(`~/.config/chromium/NativeMessagingHosts/com.zdm.native.json`) and
-Firefox (`~/.mozilla/native-messaging-hosts/com.zdm.native.json`).
-No sudo needed.
+That registers the native host for every supported browser it finds
+— Chromium (`~/.config/chromium/NativeMessagingHosts/`), Chrome
+(`~/.config/google-chrome/NativeMessagingHosts/`), Edge
+(`~/.config/microsoft-edge/NativeMessagingHosts/`), Brave
+(`~/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/`),
+Opera (`~/.config/opera/NativeMessagingHosts/`), Vivaldi
+(`~/.config/vivaldi/NativeMessagingHosts/`), and Firefox
+(`~/.mozilla/native-messaging-hosts/`). A browser is registered when
+its binary is on PATH or its config directory exists; the script
+prints which ones it registered and which it skipped. No sudo needed.
+
+One pinned extension ID (`mojdpgikbnejopblfjfphlkdnogkkimh`) is used
+for all Chromium-family browsers, so the same unpacked extension
+works in each of them.
 
 ## Load the extension (manual — browsers require a click in the UI)
 
 There is no supported headless way to do this step; it is one click
-per browser, once (Chromium keeps unpacked extensions across
-restarts; Firefox temporary add-ons do not — see below).
+per browser, once (Chromium-family browsers keep unpacked extensions
+across restarts; Firefox temporary add-ons do not — see below).
 
-**Chromium** (`chrome://extensions`):
+**Chromium-family** — Chromium, Chrome, Edge, Brave, Opera, Vivaldi
+(all use the same steps and the same pinned extension ID):
 
-1. Turn **Developer mode** ON (top right).
-2. **Load unpacked** -> select `~/workspace/zdm-tauri/browser/chromium`.
-3. The extension ID shown must be `mojdpgikbnejopblfjfphlkdnogkkimh`
+1. Open `chrome://extensions` (Edge: `edge://extensions`,
+   Brave: `brave://extensions`, Opera: `opera://extensions`,
+   Vivaldi: `vivaldi://extensions`).
+2. Turn **Developer mode** ON (top right).
+3. **Load unpacked** -> select `~/workspace/zdm-tauri/browser/chromium`.
+4. The extension ID shown must be `mojdpgikbnejopblfjfphlkdnogkkimh`
    (pinned by the manifest `key`). If it ever differs, re-run:
    `CHROMIUM_EXTENSION_ID=<shown id> ./browser/install.sh`.
 
@@ -98,8 +126,63 @@ restarts; Firefox temporary add-ons do not — see below).
 1. **Load Temporary Add-on…** -> select
    `~/workspace/zdm-tauri/browser/firefox/manifest.json`.
 2. Temporary add-ons disappear when Firefox restarts — load it again
-   after a restart. (A permanent install would need a signed `.xpi`
-   from addons.mozilla.org, which this project does not ship.)
+   after a restart. For a permanent install, see below.
+
+### Firefox, permanent install
+
+Firefox Release and Beta only install extensions signed by Mozilla.
+An unsigned `.xpi` cannot be installed permanently on them — and an
+enterprise policy (`policies.json`, `Extensions.Install`) does **not**
+exempt it from signing either: the policy only controls where the
+extension is installed from, the signature check still applies. The
+only ways to run this extension unsigned are Firefox ESR (with
+signing enforcement disabled by an administrator) or Developer
+Edition / Nightly (with `xpinstall.signatures.required` set to
+`false`) — none of which is the stock Firefox Release this project
+targets. So a permanent install on stock Firefox means getting the
+extension signed through addons.mozilla.org (AMO). **No signed
+`.xpi` is shipped with this project, and the extension is not
+published on AMO** — signing is a manual step for the maintainer:
+
+1. Build the package (unsigned):
+   ```bash
+   ./browser/package-xpi.sh
+   # -> browser/firefox/zdm-firefox-1.2.0.xpi
+   ```
+   The manifest already carries what AMO requires for a new
+   submission: the gecko id (`zdm@example.local`) and a data
+   collection declaration (`data_collection_permissions.required:
+   ["none"]` — the extension sends URLs only to the local native
+   host on the same machine, never to a server).
+2. Create an account at
+   [addons.mozilla.org](https://addons.mozilla.org/) and open the
+   Developer Hub → **Submit a New Add-on**.
+3. Choose the distribution: **"On your own" (unlisted)** to keep the
+   extension self-distributed (you host the signed `.xpi` yourself),
+   or **"On this site" (listed)** for a public AMO listing.
+4. Upload `zdm-firefox-1.2.0.xpi`, fill in the listing details, and
+   submit. Mozilla reviews the submission (automated validation
+   first; a manual review can follow at any time) and signs it.
+   (Equivalent command-line route: `web-ext sign --channel=unlisted`
+   with AMO API keys from the Developer Hub.)
+5. Download the **signed** `.xpi` AMO returns and install it in
+   Firefox (open the file, or drag it onto the browser window).
+   A signed unlisted `.xpi` installs permanently and survives
+   restarts; Firefox updates it when a newer signed version is
+   published at the same update URL.
+
+Alternative without AMO: run **Firefox ESR** and disable signing
+enforcement (`about:config` → `xpinstall.signatures.required` →
+`false`), then install the unsigned `.xpi` from step 1. That is the
+only supported unsigned route Mozilla documents for an ESR
+deployment, and it only applies to ESR — not to stock Firefox
+Release.
+
+## Safari
+
+Not supported. A Safari extension needs macOS, Xcode, and an Apple
+Developer account, none of which this Linux-only project has. The
+extension is Chromium-family + Firefox only.
 
 ## Use
 
@@ -139,8 +222,12 @@ restarts; Firefox temporary add-ons do not — see below).
   the common cases and keeps the permission set minimal.
   - `blob:` / `data:` sources get no button — the browser does not
     hand those bytes out to extensions.
-  - A `.m3u8` / `.mpd` URL downloads the playlist file, not the
-    merged video; ZDM does not yet join HLS/DASH segments.
+  - A `.m3u8` / `.mpd` URL goes through ZDM's stream merging: HLS
+    downloads the best variant's segments and remuxes them to
+    `.mp4` (AES-128 HLS supported); DASH muxes the best video +
+    audio to `.mp4` via ffmpeg. Limits: live streams are rejected
+    (VOD only), and DASH without ffmpeg falls back to the playlist
+    file with an honest note on the row.
   - Players that fetch media purely over XHR/fetch (no `<video>`
     source) are not seen by the content script.
 - **Not intercepted:** `blob:` / `data:` / `chrome://` / `about:` /
@@ -157,9 +244,10 @@ restarts; Firefox temporary add-ons do not — see below).
 - **URL never reaches ZDM:** check `~/Downloads/ZDM/queue.json`
   (should be `[]` after ZDM drains it) and
   `~/Downloads/ZDM/native-host.log` for host errors.
-- **ZDM does not start:** the host launches
-  `<project>/release/zdm` when no `zdm` process runs. If the binary
-  is missing, rebuild (`npm run tauri build`) and re-sync.
+- **ZDM does not start:** the host launches `/usr/bin/zdm` first,
+  then `<project>/release/zdm`, then the AppImage, when no `zdm`
+  process runs. If no binary exists, rebuild (`npm run tauri build`)
+  and re-sync (or install the `.deb`).
 - **No confirmation popup:** check Settings -> "Ask before
   downloading" is ON. If it is OFF, intercepted downloads
   auto-start silently by design. If it is ON and still nothing
@@ -170,10 +258,12 @@ restarts; Firefox temporary add-ons do not — see below).
   answer the HEAD probe (or did not send Content-Length). The
   download still works — the size is filled in once it starts.
 - **Firefox lost the extension after a restart:** expected for a
-  temporary add-on — load it again via `about:debugging`.
+  temporary add-on — load it again via `about:debugging`, or do the
+  permanent AMO install above.
 - **Chromium shows a different extension ID:** re-run install.sh with
   `CHROMIUM_EXTENSION_ID=<id>` (see Install).
 - **Two ZDM windows:** the host only launches ZDM when no `zdm`
-  process is found (`/proc` scan). If you run the AppImage and the
+  process is found (`/proc` scan — it matches `/usr/bin/zdm`,
+  `release/zdm`, and the AppImage). If you run the AppImage and the
   binary at the same time, close one — the queue file is shared, so
   both would drain it, but only one UI is needed.

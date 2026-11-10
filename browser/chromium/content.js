@@ -21,8 +21,9 @@
 // Limits, stated honestly:
 //  - blob: and data: sources are skipped — the browser does not hand
 //    those bytes out to extensions, so there is nothing to download.
-//  - A .m3u8/.mpd URL downloads the playlist file, not the merged
-//    video; ZDM does not yet join HLS/DASH segments.
+//  - A .m3u8/.mpd URL goes through ZDM's stream merging (HLS to
+//    .mp4, DASH to .mp4 via ffmpeg; live streams rejected, DASH
+//    without ffmpeg falls back to the playlist file).
 //  - Players that fetch media purely over XHR/fetch (no <video> src)
 //    are not seen by this script.
 "use strict";
