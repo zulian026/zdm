@@ -8,7 +8,7 @@
 #              download_url + sha256. That state is exactly what the
 #              offer banner renders (banner pixels were reviewed in
 #              headless Chrome at 1440/768/390).
-#   Phase 2 — same version (0.1.0): up_to_date, no offer.
+#   Phase 2 — same version (0.1.1): up_to_date, no offer.
 #   Phase 3 — broken manifest ("not json{"): invalid_manifest, no offer.
 #   Phase 4 — dead source (closed port): unreachable, no offer.
 #   Phase 5 — empty manifest URL: no check runs at all (the auto-check
@@ -147,11 +147,17 @@ print(row[0] if row else "")
 EOF
 }
 
+detect_display() { # the live XWayland display moves on re-login (:1 -> :2 on 2026-11-10); never hardcode it
+    local d
+    d=$(ps aux | grep -oP 'Xwayland :\K[0-9]+' | head -1)
+    echo ":${d:-1}"
+}
+
 zdm_start() {
-    DISPLAY=:1 ./release/zdm > "$TESTDIR/zdm-$(date +%H%M%S).log" 2>&1 &
+    DISPLAY=$(detect_display) ./release/zdm > "$TESTDIR/zdm-$(date +%H%M%S).log" 2>&1 &
     echo $! > "$TESTDIR/zdm.pid"
     sleep 4
-    pgrep -x zdm >/dev/null || fail "zdm did not start"
+    pgrep -x zdm >/dev/null || fail "zdm did not start (DISPLAY=$(detect_display))"
 }
 
 zdm_kill9() {
@@ -192,7 +198,7 @@ cleanup() {
         log "update_state.json removed (did not exist before the run)"
     fi
     if [ "$ZDM_RUNNING_AT_START" = 1 ]; then
-        DISPLAY=:1 ./release/zdm > "$TESTDIR/zdm-relaunch.log" 2>&1 &
+        DISPLAY=$(detect_display) ./release/zdm > "$TESTDIR/zdm-relaunch.log" 2>&1 &
         sleep 3
         pgrep -x zdm >/dev/null && log "user ZDM relaunched with restored settings" \
             || log "WARNING: user ZDM did not relaunch — start it by hand"
@@ -230,11 +236,11 @@ stop_server
 
 # --- phase 2: same version is up to date -----------------------------------
 rm -f "$USTATE"
-start_server --version 0.1.0 --sha correct
+start_server --version 0.1.1 --sha correct
 patch_settings "$MANIFEST_URL"
 zdm_start
 wait_state up_to_date 40 || fail "phase 2: no up_to_date state (got: $(state_json))"
-log "phase 2 PASS: same version (0.1.0) is up_to_date, no offer"
+log "phase 2 PASS: same version (0.1.1) is up_to_date, no offer"
 zdm_kill9
 stop_server
 

@@ -79,6 +79,17 @@ pub fn init_db(db_path: &Path) -> Result<(), String> {
     ] {
         let _ = conn.execute(col, []);
     }
+    // Repair: rows written before the resume-count fix could carry
+    // downloaded > total (bytes counted twice around a segment
+    // split). Downloaded counts distinct bytes and can never pass
+    // the total, so clamp the stale value instead of letting it
+    // stand — including completed rows, which restore never
+    // rebuilds. Idempotent: a clean database is untouched. Rows
+    // with an unknown total (NULL) are never clamped.
+    let _ = conn.execute(
+        "UPDATE downloads SET downloaded = total WHERE total IS NOT NULL AND downloaded > total",
+        [],
+    );
     Ok(())
 }
 
@@ -309,6 +320,70 @@ mod tests {
         );
         delete_download(&path, id).unwrap();
         assert!(list_downloads(&path).unwrap().is_empty());
+        let _ = std::fs::remove_file(&path);
+    }
+
+    #[test]
+    fn downloaded_clamped_to_total_on_open() {
+        let path = tmp_db();
+        let id = insert_download(
+            &path,
+            "https://example.com/a.bin",
+            "a.bin",
+            "/tmp/a.bin",
+            Some(100),
+            "General",
+        )
+        .unwrap();
+        // Simulate a legacy inflated row (pre-fix double count)
+        // with a raw write: the public writers all repair on open,
+        // so an inflated value can only exist in a database written
+        // by the old code.
+        let conn = Connection::open(&path).unwrap();
+        conn.execute(
+            "UPDATE downloads SET downloaded=150 WHERE id=?1",
+            params![id],
+        )
+        .unwrap();
+        let v: i64 = conn
+            .query_row(
+                "SELECT downloaded FROM downloads WHERE id=?1",
+                params![id],
+                |r| r.get(0),
+            )
+            .unwrap();
+        assert_eq!(v, 150);
+        drop(conn);
+        // Reopening the database repairs it.
+        init_db(&path).unwrap();
+        assert_eq!(list_downloads(&path).unwrap()[0].downloaded, 100);
+        // Unknown-total rows are never clamped.
+        let id2 = insert_download(
+            &path,
+            "https://example.com/b.bin",
+            "b.bin",
+            "/tmp/b.bin",
+            None,
+            "General",
+        )
+        .unwrap();
+        let conn = Connection::open(&path).unwrap();
+        conn.execute(
+            "UPDATE downloads SET downloaded=150 WHERE id=?1",
+            params![id2],
+        )
+        .unwrap();
+        drop(conn);
+        init_db(&path).unwrap();
+        assert_eq!(
+            list_downloads(&path)
+                .unwrap()
+                .iter()
+                .find(|r| r.id == id2)
+                .unwrap()
+                .downloaded,
+            150
+        );
         let _ = std::fs::remove_file(&path);
     }
 }

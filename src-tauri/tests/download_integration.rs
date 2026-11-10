@@ -213,10 +213,14 @@ struct Server {
 }
 
 fn start_server() -> Server {
+    start_server_sized(5 * 1024 * 1024)
+}
+
+fn start_server_sized(size: usize) -> Server {
     use base64::Engine as _;
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
     let addr = listener.local_addr().unwrap();
-    let data = Arc::new(test_data(5 * 1024 * 1024));
+    let data = Arc::new(test_data(size));
     let mut h = Sha256::new();
     h.update(data.as_slice());
     let digest_b64 = Arc::new(base64::engine::general_purpose::STANDARD.encode(h.finalize()));
@@ -728,6 +732,181 @@ async fn startup_resume_continues_interrupted_download() {
         file_sha256(&std::path::PathBuf::from(&view.dest_path)),
         expected
     );
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+#[tokio::test]
+async fn resumed_download_never_counts_bytes_twice() {
+    // Regression: after a kill mid-download + resume, the DB
+    // `downloaded` ended up past `total` (33,189,513 for a
+    // 31,457,280-byte file) while the file itself hashed fine.
+    // Root cause is a race in download_segment: an idle worker
+    // splits a segment while a chunk is in flight, and the worker
+    // writes the chunk against the stale (larger) end — the bytes
+    // past the new end are counted twice, once in each segment's
+    // `pos`. The fix clamps every write to the segment's live end.
+    // This test asserts the invariant at every persisted save and
+    // at completion: downloaded <= total throughout, == total at
+    // the end, hash match.
+    //
+    // The file is 64 MiB and the polls run every 10 ms: without a
+    // speed limit the local download is fast enough that a smaller
+    // file could finish between two polls (the kill point would be
+    // missed — a 5 MiB file flaked exactly that way, and a 16 MiB
+    // file too), and a shared rate limit evens the segments out so
+    // the split race never triggers. The 64 MiB run takes ~30 s on
+    // this VM. The race itself needs no kill to fire — it also
+    // triggers on a plain fast download — but the kill/resume
+    // cycles below are what the original e2e exercised.
+    let total: u64 = 64 * 1024 * 1024;
+    let server = start_server_sized(total as usize);
+    // The expected hash comes from the server's own data instead of
+    // regenerating a second 64 MiB vector.
+    let expected = sha256_hex(&server._data);
+    let (mut settings, dir) = test_settings();
+    let db_path = zdm_lib::db::db_path_for(&settings.download_dir);
+
+    // The persisted value is always a sampled in-memory value
+    // (update_db writes g.downloaded(), and it only grows), so
+    // checking the DB after each phase catches any excess a save
+    // wrote during it. The live counter is checked every poll
+    // instead: polling SQLite from this async loop every 10 ms
+    // would block the runtime threads and starve the download.
+    let assert_invariant = |db_path: &std::path::Path| {
+        let rows = zdm_lib::db::list_downloads(db_path).unwrap();
+        for r in &rows {
+            if let Some(t) = r.total {
+                assert!(
+                    r.downloaded <= t,
+                    "downloaded {} exceeded total {} (status {})",
+                    r.downloaded, t, r.status
+                );
+            }
+        }
+    };
+
+    // --- Run 1: start, kill at ~32 MiB.
+    let mut manager = Manager::new(settings.clone());
+    let url = format!("{}file.bin", server.base);
+    let handle = manager.add(&url, Some(8)).unwrap();
+    manager.queue_running = true;
+    Manager::start_task(handle.clone(), settings.clone(), manager.limiter.clone(), None).await;
+    let deadline = Instant::now() + Duration::from_secs(60);
+    let frozen = loop {
+        tokio::time::sleep(Duration::from_millis(10)).await;
+        let d = handle.inner.lock().await.downloaded();
+        assert!(d <= total, "in-memory downloaded {d} exceeded total");
+        if d >= 32 * 1024 * 1024 {
+            break d;
+        }
+        if Instant::now() > deadline {
+            panic!("download stalled before the kill point, downloaded={d}");
+        }
+    };
+    assert!(frozen < total);
+    if let Some(j) = handle.join.lock().await.take() {
+        j.abort();
+    }
+    tokio::time::sleep(Duration::from_millis(200)).await;
+    drop(manager);
+    assert_invariant(&db_path);
+
+    // --- Run 2: a fresh Manager resumes; kill again at ~48 MiB.
+    // A second kill/resume cycle re-rolls the race (uneven segment
+    // positions after each resume are what make idle workers split
+    // busy segments) and gives the invariant a second workout.
+    let mut manager2 = Manager::new(settings.clone());
+    assert_eq!(manager2.resume_candidate_ids().len(), 1);
+    assert!(manager2.startup_resume(chrono::Local::now()));
+    let views = manager2.list_views().await;
+    let restored = views.iter().find(|v| v.filename == "file.bin").unwrap();
+    let id2 = restored.id.clone();
+    manager2.queue_tick().await;
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let frozen2 = loop {
+        tokio::time::sleep(Duration::from_millis(10)).await;
+        let v = manager2
+            .list_views()
+            .await
+            .into_iter()
+            .find(|v| v.id == id2)
+            .unwrap();
+        assert!(
+            v.downloaded <= v.total.unwrap_or(u64::MAX),
+            "live downloaded {} exceeded total {:?}",
+            v.downloaded,
+            v.total
+        );
+        if v.downloaded >= 48 * 1024 * 1024 {
+            break v.downloaded;
+        }
+        if v.status == "completed" || v.status == "failed" {
+            panic!("download finished before the second kill point");
+        }
+        if Instant::now() > deadline {
+            panic!("resume stalled, last status: {}", v.status);
+        }
+    };
+    assert!(frozen2 < total);
+    // Kill the runner: the handle is found by the restored id
+    // (before the manager is dropped — the Arc survives it).
+    let handle2 = manager2
+        .tasks
+        .values()
+        .find(|h| h.id == id2)
+        .unwrap()
+        .clone();
+    if let Some(j) = handle2.join.lock().await.take() {
+        j.abort();
+    }
+    tokio::time::sleep(Duration::from_millis(200)).await;
+    drop(manager2);
+    assert_invariant(&db_path);
+
+    // --- Run 3: a fresh Manager resumes; poll the invariant while
+    // it finishes.
+    let mut manager3 = Manager::new(settings.clone());
+    assert_eq!(manager3.resume_candidate_ids().len(), 1);
+    assert!(manager3.startup_resume(chrono::Local::now()));
+    let views = manager3.list_views().await;
+    let restored = views.iter().find(|v| v.filename == "file.bin").unwrap();
+    let id = restored.id.clone();
+    manager3.queue_tick().await;
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let view = loop {
+        tokio::time::sleep(Duration::from_millis(10)).await;
+        let v = manager3
+            .list_views()
+            .await
+            .into_iter()
+            .find(|v| v.id == id)
+            .unwrap();
+        assert!(
+            v.downloaded <= v.total.unwrap_or(u64::MAX),
+            "live downloaded {} exceeded total {:?}",
+            v.downloaded,
+            v.total
+        );
+        if v.status == "completed" || v.status == "failed" {
+            break v;
+        }
+        if Instant::now() > deadline {
+            panic!("resume stalled, last status: {}", v.status);
+        }
+    };
+    assert_eq!(view.status, "completed");
+    assert_eq!(view.downloaded, total, "final downloaded must equal total");
+    assert_eq!(
+        file_sha256(&std::path::PathBuf::from(&view.dest_path)),
+        expected
+    );
+    let rows = zdm_lib::db::list_downloads(&db_path).unwrap();
+    let row = rows
+        .iter()
+        .find(|r| r.filename.as_deref() == Some("file.bin"))
+        .unwrap();
+    assert_eq!(row.downloaded, total as i64);
+    assert_eq!(row.total, Some(total as i64));
     let _ = std::fs::remove_dir_all(&dir);
 }
 

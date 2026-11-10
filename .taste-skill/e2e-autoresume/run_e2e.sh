@@ -14,6 +14,13 @@
 #   Phase 3 — with resume_on_startup=false nothing auto-resumes;
 #              flipping the toggle back ON resumes it.
 #
+#   Resume-count invariant (2026-11-10 fix): every DB sample taken
+#   while waiting (wait_downloaded / wait_status) asserts
+#   downloaded <= total, and every completed download asserts
+#   downloaded == total (check_final). The old bug made the DB
+#   downloaded exceed total after a kill/resume (segment bytes
+#   counted twice); the file itself always hashed fine.
+#
 # Isolation: everything runs in $TESTDIR with its own download_dir,
 # its own downloads.db and its own queue.json. The user's real
 # ~/Downloads/ZDM/ is never touched. settings.json is backed up
@@ -70,10 +77,29 @@ print(row[0] if row else "")
 EOF
 }
 
+# check_invariant <row> — row is status|downloaded|total|flag; prints a
+# violation line and returns 1 when downloaded exceeds total.
+check_invariant() {
+    local d t
+    d=$(echo "$1" | cut -d'|' -f2); t=$(echo "$1" | cut -d'|' -f3)
+    case "$d$t" in ''|*[!0-9]*) return 0 ;; esac
+    [ "$d" -le "$t" ] && return 0
+    echo "INVARIANT-VIOLATION downloaded=$d total=$t row=$1"; return 1
+}
+
+check_final() { # check_final <file> — completed row must have downloaded == total
+    local row d t
+    row=$(db_row "$1")
+    d=$(echo "$row" | cut -d'|' -f2); t=$(echo "$row" | cut -d'|' -f3)
+    [ "$d" = "$t" ] && [ -n "$d" ] || { echo "FINAL downloaded=$d total=$t row=$row"; return 1; }
+    echo "final downloaded=$d total=$t"
+}
+
 wait_downloaded() { # wait_downloaded <file> <bytes> <timeout_s>
     local end=$(( $(date +%s) + $3 ))
     while [ "$(date +%s)" -lt "$end" ]; do
         local row; row=$(db_row "$1")
+        check_invariant "$row" || return 1
         local d; d=$(echo "$row" | cut -d'|' -f2)
         case "$d" in ''|*[!0-9]*) ;; *) [ "$d" -ge "$2" ] && { echo "$d"; return 0; } ;; esac
         sleep 0.2
@@ -85,6 +111,7 @@ wait_status() { # wait_status <file> <status> <timeout_s>
     local end=$(( $(date +%s) + $3 ))
     while [ "$(date +%s)" -lt "$end" ]; do
         local row; row=$(db_row "$1")
+        check_invariant "$row" || return 1
         [ "$(echo "$row" | cut -d'|' -f1)" = "$2" ] && return 0
         sleep 0.5
     done
@@ -156,11 +183,20 @@ json.dump(s, open(path, "w"))
 EOF
 }
 
+# The graphical display moves when the user re-logs in (it was :1,
+# then :2 after the 13:05 login on 2026-11-10): detect the live
+# XWayland display instead of hardcoding one.
+detect_display() {
+    local d
+    d=$(ps aux | grep -oP 'Xwayland :\K[0-9]+' | head -1)
+    echo ":${d:-1}"
+}
+
 zdm_start() {
-    DISPLAY=:1 ./release/zdm > "$TESTDIR/zdm-$(date +%H%M%S).log" 2>&1 &
+    DISPLAY=$(detect_display) ./release/zdm > "$TESTDIR/zdm-$(date +%H%M%S).log" 2>&1 &
     echo $! > "$TESTDIR/zdm.pid"
     sleep 4
-    pgrep -x zdm >/dev/null || fail "zdm did not start"
+    pgrep -x zdm >/dev/null || fail "zdm did not start (DISPLAY=$(detect_display))"
 }
 
 zdm_kill9() {
@@ -176,7 +212,7 @@ cleanup() {
         cp "$BACKUP" "$SETTINGS" && log "settings.json restored byte-for-byte"
     fi
     if [ "$ZDM_RUNNING_AT_START" = 1 ]; then
-        DISPLAY=:1 ./release/zdm > "$TESTDIR/zdm-relaunch.log" 2>&1 &
+        DISPLAY=$(detect_display) ./release/zdm > "$TESTDIR/zdm-relaunch.log" 2>&1 &
         sleep 3
         pgrep -x zdm >/dev/null && log "user ZDM relaunched with restored settings" \
             || log "WARNING: user ZDM did not relaunch — start it by hand"
@@ -243,6 +279,7 @@ log "after kill: $ROW (want status=downloading)"
 CUTOFF=$(date +%Y-%m-%dT%H:%M:%S)
 zdm_start
 wait_status big.bin completed 120 || fail "big.bin did not complete after reopen: $(db_row big.bin)"
+check_final big.bin | tee -a "$SUMMARY" || fail "big.bin final downloaded != total: $(db_row big.bin)"
 GOT=$(sha256sum "$(db_dest big.bin)" | cut -d' ' -f1)
 WANT=$(sha256sum "$SRVDIR/big.bin" | cut -d' ' -f1)
 [ "$GOT" = "$WANT" ] || fail "big.bin hash mismatch after resume"
@@ -275,6 +312,7 @@ zdm_kill9
 set_db_status big2.bin downloading 0
 zdm_start
 wait_status big2.bin completed 60 || fail "big2.bin did not complete after flip-back: $(db_row big2.bin)"
+check_final big2.bin | tee -a "$SUMMARY" || fail "big2.bin final downloaded != total: $(db_row big2.bin)"
 [ "$(sha256sum "$(db_dest big2.bin)" | cut -d' ' -f1)" = "$(sha256sum "$SRVDIR/big2.bin" | cut -d' ' -f1)" ] \
     || fail "big2.bin hash mismatch"
 log "Phase 2b PASS: flipped back to interrupted, resumed, hash match"
@@ -306,6 +344,7 @@ zdm_kill9
 patch_settings true
 zdm_start
 wait_status big3.bin completed 60 || fail "big3.bin did not complete after toggle back ON: $(db_row big3.bin)"
+check_final big3.bin | tee -a "$SUMMARY" || fail "big3.bin final downloaded != total: $(db_row big3.bin)"
 [ "$(sha256sum "$(db_dest big3.bin)" | cut -d' ' -f1)" = "$(sha256sum "$SRVDIR/big3.bin" | cut -d' ' -f1)" ] \
     || fail "big3.bin hash mismatch"
 log "Phase 3b PASS: toggle back ON, resumed, hash match"

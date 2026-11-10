@@ -32,7 +32,7 @@ build = "build.rs"
 description = "ZDM Download Manager — clean-room Linux download manager"
 edition = "2021"
 name = "zdm"
-version = "0.1.0"
+version = "0.1.1"
 
 [profile.release]
 lto = true

@@ -253,6 +253,22 @@ fn init_segments(total: u64, connections: u32) -> Vec<Segment> {
         .collect()
 }
 
+/// Bytes of a chunk that may be written at `pos` without passing
+/// `end` (inclusive). A segment's end can shrink while a chunk is
+/// in flight — an idle worker splits the largest remaining segment,
+/// and the split-off half takes over the tail. The surplus bytes
+/// belong to that half, which fetches them itself; writing them
+/// here would count them twice (once in this segment's `pos`, once
+/// in the new segment's) and push `downloaded` past `total`.
+/// Returns 0 when the segment is already finished (`pos > end`).
+fn writable_in_segment(pos: u64, end: u64, chunk_len: usize) -> usize {
+    if pos > end {
+        0
+    } else {
+        ((end - pos + 1) as usize).min(chunk_len)
+    }
+}
+
 // ---------------------------------------------------------------- URL helpers
 
 /// Split (clean_url, Authorization header) from a URL with embedded
@@ -1140,6 +1156,15 @@ impl Manager {
                                 inner.total = sc.total;
                                 inner.segments = sc.segments;
                                 inner.downloaded_single = sc.downloaded_single;
+                                // A sidecar written before the split
+                                // fix could carry an inflated counter
+                                // (bytes counted twice around a
+                                // split): never restore more than the
+                                // total.
+                                if let Some(t) = inner.total {
+                                    inner.downloaded_single =
+                                        inner.downloaded_single.min(t);
+                                }
                                 // The sidecar is written on every save, so
                                 // it is the freshest verification record.
                                 if sc.expected_hash.is_some() {
@@ -1672,7 +1697,15 @@ fn update_db(g: &TaskInner) {
         return;
     };
     let db_path = db::db_path_for(&g.dest_dir);
-    let _ = db::update_download(&db_path, db_id, g.downloaded() as i64, g.total.map(|t| t as i64), &g.status, g.paused_by_schedule);
+    // Safety net: `downloaded` counts distinct bytes and can never
+    // pass `total` (download_segment clamps every write to the
+    // segment's live end). Never persist a larger value — a stale
+    // inflated row must not survive a save.
+    let downloaded = match g.total {
+        Some(t) => g.downloaded().min(t),
+        None => g.downloaded(),
+    };
+    let _ = db::update_download(&db_path, db_id, downloaded as i64, g.total.map(|t| t as i64), &g.status, g.paused_by_schedule);
     let _ = db::update_verification(
         &db_path,
         db_id,
@@ -2752,6 +2785,11 @@ async fn prepare(handle: &Arc<TaskHandle>, settings: &Settings) -> Result<(), St
                         g.stream_note = sc.stream_note;
                         g.total = sc.total;
                         g.downloaded_single = sc.downloaded_single;
+                        // Never restore an inflated counter (see the
+                        // clamp in restore_from_db).
+                        if let Some(t) = g.total {
+                            g.downloaded_single = g.downloaded_single.min(t);
+                        }
                         g.verify_state = sc.verify_state;
                         g.computed_hash = sc.computed_hash;
                         if sc.expected_hash.is_some() {
@@ -2772,6 +2810,11 @@ async fn prepare(handle: &Arc<TaskHandle>, settings: &Settings) -> Result<(), St
                     g.total = sc.total;
                     g.segments = sc.segments;
                     g.downloaded_single = sc.downloaded_single;
+                    // Never restore an inflated counter (see the
+                    // clamp in restore_from_db).
+                    if let Some(t) = g.total {
+                        g.downloaded_single = g.downloaded_single.min(t);
+                    }
                     // The sidecar is the freshest verification record
                     // for this download.
                     if sc.expected_hash.is_some() {
@@ -3092,17 +3135,51 @@ async fn download_segment(
                     continue;
                 }
             }
-            let want = (cur_end - cur_pos + 1) as usize;
+            // The bounds above (`cur_pos`, `cur_end`) were read
+            // before the chunk arrived; an idle worker may have
+            // split this segment while it was in flight, shrinking
+            // its end. Re-read the live bounds and write only what
+            // still belongs to this segment — the surplus bytes are
+            // the split-off half's, which fetches them itself.
+            // (Regression: the old code wrote the whole chunk
+            // against the stale end, so those bytes were counted
+            // twice — here in `pos`, and again by the new segment —
+            // and `downloaded` ended up past `total`.)
+            let (live_pos, live_end) = {
+                let g = handle.inner.lock().await;
+                let Some(seg) = g.segments.get(idx) else {
+                    return Ok(());
+                };
+                (seg.pos, seg.end)
+            };
+            if live_pos > live_end {
+                return Ok(());
+            }
+            let want = (live_end - live_pos + 1) as usize;
             let data = if chunk.len() > want { chunk.slice(..want) } else { chunk };
             let n = data.len();
             RateLimiter::acquire(limiter, n).await;
+            // A split may also have landed during the limiter wait:
+            // clamp once more against the live end before touching
+            // the file, so the write never passes it.
+            let (live_pos, live_end) = {
+                let g = handle.inner.lock().await;
+                let Some(seg) = g.segments.get(idx) else {
+                    return Ok(());
+                };
+                (seg.pos, seg.end)
+            };
+            let n = writable_in_segment(live_pos, live_end, n);
+            if n == 0 {
+                return Ok(());
+            }
             {
                 let mut file_guard = handle.file.lock().unwrap();
                 if let Some(f) = file_guard.as_mut() {
-                    if f.seek(SeekFrom::Start(cur_pos)).is_err() {
+                    if f.seek(SeekFrom::Start(live_pos)).is_err() {
                         return Err("seek failed on part file".to_string());
                     }
-                    if f.write_all(&data).is_err() {
+                    if f.write_all(&data[..n]).is_err() {
                         return Err("write failed on part file".to_string());
                     }
                 }
@@ -3111,6 +3188,13 @@ async fn download_segment(
                 let mut g = handle.inner.lock().await;
                 if let Some(seg) = g.segments.get_mut(idx) {
                     seg.pos += n as u64;
+                    // Backstop for a split landing between the
+                    // clamp above and this update: `pos` must never
+                    // pass `end + 1`, or the segment sum (and with
+                    // it `downloaded`) exceeds the file's total.
+                    if seg.pos > seg.end + 1 {
+                        seg.pos = seg.end + 1;
+                    }
                 }
                 note_bytes(&mut g, app, n);
                 save_state(&mut g, false);
@@ -3278,6 +3362,89 @@ mod tests {
             assigned: true,
         }];
         assert!(claim_or_split(&mut segs).is_none());
+    }
+
+    #[test]
+    fn writable_in_segment_clamps_to_live_end() {
+        assert_eq!(writable_in_segment(0, 99, 50), 50);
+        assert_eq!(writable_in_segment(0, 99, 200), 100);
+        assert_eq!(writable_in_segment(90, 99, 200), 10);
+        assert_eq!(writable_in_segment(100, 99, 200), 0);
+        assert_eq!(writable_in_segment(0, 0, 1), 1);
+    }
+
+    #[test]
+    fn split_mid_chunk_never_double_counts() {
+        // The regression, replayed deterministically: a worker reads
+        // (pos, end), an idle worker splits the segment while the
+        // chunk is in flight, and the chunk straddles the new end.
+        // The bytes past the new end belong to the split-off
+        // segment; the old code wrote them here anyway, counting
+        // them twice (once in each segment's `pos`) — that is how
+        // `downloaded` ended up past `total` after a resume.
+        let total = 1_048_576u64;
+        let mut segs = init_segments(total, 4);
+        for s in &mut segs {
+            s.assigned = true;
+        }
+        // Worker read the bounds before the split...
+        let (pos, end) = (segs[0].pos, segs[0].end);
+        assert_eq!((pos, end), (0, 262_143));
+        // ...then the split lands: seg 0 shrinks to [0, 131072], a
+        // new segment takes [131073, 262143].
+        let idx = claim_or_split(&mut segs).expect("should split");
+        assert_eq!(segs[0].end, 131_072);
+        assert_eq!(segs[idx].start, 131_073);
+        // The in-flight chunk (200 KiB) was sized for the stale end.
+        let chunk = 200_000usize;
+        // The old arithmetic would have written all 200,000 bytes
+        // and pushed pos to 200,000 — past the new end.
+        assert!(pos + chunk as u64 > segs[0].end + 1);
+        // The fix writes only what still belongs to this segment.
+        let n = writable_in_segment(segs[0].pos, segs[0].end, chunk);
+        assert_eq!(n, 131_073);
+        segs[0].pos += n as u64;
+        // Backstop: even if a split landed after the clamp, pos
+        // never passes end + 1.
+        if segs[0].pos > segs[0].end + 1 {
+            segs[0].pos = segs[0].end + 1;
+        }
+        // The counted bytes never exceed the total.
+        let counted: u64 = segs
+            .iter()
+            .map(|s| s.pos.saturating_sub(s.start))
+            .sum();
+        assert_eq!(counted, 131_073);
+        assert!(counted <= total);
+    }
+
+    #[test]
+    fn splits_preserve_partition() {
+        // Repeatedly split a 1 MiB file the way idle workers do, and
+        // assert the segments always tile [0, total) exactly, with
+        // no overlap and no gap: otherwise the sum of (pos - start)
+        // could exceed the total.
+        let total = 1_048_576u64;
+        let mut segs = init_segments(total, 4);
+        for _ in 0..16 {
+            for s in &mut segs {
+                s.assigned = true;
+            }
+            if claim_or_split(&mut segs).is_none() {
+                break;
+            }
+            let mut sorted: Vec<_> = segs.iter().map(|s| (s.start, s.end)).collect();
+            sorted.sort();
+            let mut expect = 0u64;
+            for (start, end) in sorted {
+                assert_eq!(start, expect, "gap or overlap after split");
+                expect = end + 1;
+            }
+            assert_eq!(expect, total);
+            assert!(segs
+                .iter()
+                .all(|s| s.pos >= s.start && s.pos <= s.end + 1));
+        }
     }
 
     #[test]

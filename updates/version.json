@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "download_url": "https://github.com/zulian026/zdm/releases/download/v0.1.0/ZDM_0.1.0_amd64.AppImage",
-  "sha256": "e5ba0186bbe4d443b3e4b9ae01ce09c47f329aec56926d57c7b9eae4c84ddb10",
-  "changelog": "Rilis pertama: segmented downloads, resume otomatis, checksum, ClamAV, HLS/DASH, update checker."
+  "version": "0.1.1",
+  "download_url": "https://github.com/zulian026/zdm/releases/download/v0.1.1/ZDM_0.1.1_amd64.AppImage",
+  "sha256": "9e678693b734c31d42165a8c99436d99bfebafe23ce53bb0f0aa9a749de4cd7e",
+  "changelog": "Perbaikan hitungan progres setelah resume: byte yang diunduh ulang tidak lagi dijumlah dua kali."
 }

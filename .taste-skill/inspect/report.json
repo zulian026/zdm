@@ -1,6 +1,6 @@
 {
  "url": ".taste-skill/preview.html",
- "at": "2026-11-10T05:13:53.179Z",
+ "at": "2026-11-10T07:48:35.033Z",
  "allow": [],
  "viewports": [
   {
@@ -238,16 +238,10 @@
      "textShadow": 0,
      "cardRows": [
       {
-       "count": 7,
+       "count": 8,
        "iconTopped": false,
        "rounded": true,
        "top": 646
-      },
-      {
-       "count": 3,
-       "iconTopped": false,
-       "rounded": true,
-       "top": 1506
       }
      ]
     },
@@ -279,8 +273,8 @@
       "sel": "div#tl-d-2026-11-10.tl-group",
       "tag": "div",
       "top": 610,
-      "height": 840,
-      "words": 111,
+      "height": 976,
+      "words": 128,
       "media": 0,
       "middle": 51,
       "heading": null,
@@ -297,11 +291,11 @@
      {
       "sel": "div#tl-d-2026-11-09.tl-group",
       "tag": "div",
-      "top": 1470,
-      "height": 388,
-      "words": 47,
+      "top": 1606,
+      "height": 252,
+      "words": 30,
       "media": 0,
-      "middle": 143,
+      "middle": 272,
       "heading": null,
       "left": 293,
       "right": 66,
@@ -1261,16 +1255,10 @@
      "textShadow": 0,
      "cardRows": [
       {
-       "count": 7,
+       "count": 8,
        "iconTopped": true,
        "rounded": true,
        "top": 1384
-      },
-      {
-       "count": 3,
-       "iconTopped": true,
-       "rounded": true,
-       "top": 2436
       }
      ]
     },

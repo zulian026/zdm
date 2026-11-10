@@ -38,7 +38,7 @@ LOG_FILE = os.path.join(DOWNLOAD_DIR, "native-host.log")
 # AppImage's GStreamer appsink warning). Falls back to the AppImage.
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ZDIM_BINARY = os.path.join(PROJECT_DIR, "release", "zdm")
-ZDIM_APPIMAGE = os.path.join(PROJECT_DIR, "release", "ZDM_0.1.0_amd64.AppImage")
+ZDIM_APPIMAGE = os.path.join(PROJECT_DIR, "release", "ZDM_0.1.1_amd64.AppImage")
 
 # A lock older than this is treated as stale (crashed holder).
 LOCK_STALE_SECS = 10
@@ -141,7 +141,7 @@ def _zdm_running() -> bool:
                     args = f.read().split(b"\0")
                 if args and (
                     args[0].endswith(b"/release/zdm")
-                    or b"ZDM_0.1.0_amd64.AppImage" in args[0]
+                    or b"ZDM_0.1.1_amd64.AppImage" in args[0]
                 ):
                     return True
             except (OSError, ValueError):
